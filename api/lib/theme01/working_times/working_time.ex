@@ -1,7 +1,7 @@
 defmodule Theme01.WorkingTimes.WorkingTime do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Theme01.Acount.User
+  alias Theme01.Account.User
   alias Theme01.Repo
   
   schema "workingtimes" do

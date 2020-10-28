@@ -1,10 +1,13 @@
-defmodule Theme01.Acount.Auth do
-  alias Theme01.Acount.{Encryption, User}
+defmodule Theme01.Account.Auth do
+  @seed "user_token"
+  @secret "k7kTFAgeBv0OR1vkPbTi8mZ5m"
+  alias Theme01.Account.{Encryption, User}
+  require Logger
 
   def login(params, repo) do
     user = repo.get_by(User, username: String.downcase(params["username"]))
     case authenticate(user, params["password"]) do
-      true -> {:ok, user}
+      true -> {:ok, generate_token(user)}
       _    -> :error
     end
   end
@@ -18,6 +21,10 @@ defmodule Theme01.Acount.Auth do
     else
         nil
     end
+  end
+  
+  def generate_token(id) do
+    Phoenix.Token.sign(@secret, @seed, id, max_age: 80000)
   end
 
   def signed_in?(conn) do

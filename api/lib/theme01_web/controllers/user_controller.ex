@@ -2,8 +2,8 @@ defmodule Theme01Web.UserController do
   use Theme01Web, :controller
   use Filterable.Phoenix.Controller
 
-  alias Theme01.Acount
-  alias Theme01.Acount.User
+  alias Theme01.Account
+  alias Theme01.Account.User
   alias Theme01.Repo
   import Ecto.Query
   action_fallback Theme01Web.FallbackController
@@ -25,25 +25,8 @@ defmodule Theme01Web.UserController do
      do: render(conn, "index.json", users: users, meta: filter_values)
   end
 
-def new(conn, _params) do
-    changeset = Accounts.change_user(%User{})
-    render(conn, "show.json", changeset: changeset)
-  end
-
   def create(conn, %{"user" => user_params}) do
-    case Accounts.create_user(user_params) do
-      {:ok, user} ->
-        conn
-        |> put_session(:current_user_id, user.id)
-        |> put_flash(:info, "Signed up successfully.")
-        |> redirect(to: Routes.page_path(conn, :show))
-    {:error, %Ecto.Changeset{} = changeset} ->
-      render(conn, "show.json", changeset: changeset)
-    end
-  end
-
-  def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Acount.create_user(user_params) do
+    with {:ok, %User{} = user} <- Account.create_user(user_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
@@ -52,22 +35,22 @@ def new(conn, _params) do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Acount.get_user!(id)
+    user = Account.get_user!(id)
     render(conn, "show.json", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Acount.get_user!(id)
+    user = Account.get_user!(id)
 
-    with {:ok, %User{} = user} <- Acount.update_user(user, user_params) do
+    with {:ok, %User{} = user} <- Account.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    user = Acount.get_user!(id)
+    user = Account.get_user!(id)
 
-    with {:ok, %User{}} <- Acount.delete_user(user) do
+    with {:ok, %User{}} <- Account.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
   end

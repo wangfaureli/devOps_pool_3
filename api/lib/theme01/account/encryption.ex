@@ -1,6 +1,6 @@
-defmodule Theme01.Acount.Encryption do
+defmodule Theme01.Account.Encryption do
     alias Comeonin.Bcrypt
-    alias Theme01.Acount.User
+    alias Theme01.Account.User
 
     def hash_password(password), do: Bcrypt.hashpwsalt(password)
 

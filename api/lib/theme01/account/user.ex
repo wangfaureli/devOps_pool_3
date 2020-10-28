@@ -1,12 +1,13 @@
-defmodule Theme01.Acount.User do
+defmodule Theme01.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Theme01.Account.{User, Encryption}
 
   schema "users" do
     field :email, :string
     field :username, :string
     field :encrypted_password, :string
-    field :type, :string
+    # field :type, :string
 
     # VIRTUAL FIELDS
     field :password, :string, virtual: true

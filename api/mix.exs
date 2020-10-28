@@ -47,7 +47,8 @@ defmodule Theme01.MixProject do
       {:timex, "~> 3.6"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:cors_plug, "~> 2.0.2"}
+      {:cors_plug, "~> 2.0.2"},
+      {:guardian, "~> 2.0"},
     ]
   end
 

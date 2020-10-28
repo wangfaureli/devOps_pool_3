@@ -1,12 +1,12 @@
-defmodule Theme01.Acount do
+defmodule Theme01.Account do
   @moduledoc """
-  The Acount context.
+  The Account context.
   """
 
   import Ecto.Query, warn: false
   alias Theme01.Repo
 
-  alias Theme01.Acount.User
+  alias Theme01.Account.User
 
   @doc """
   Returns the list of users.
