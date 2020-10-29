@@ -42,9 +42,7 @@
 </template>
 
 <script>
-// import store from '../../store/store';
-// import { mapActions } from 'vuex'
-import { bcrypt } from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 export default {
   name: "signIn",
@@ -63,6 +61,12 @@ export default {
     };
   },
   methods: {
+    async hashpassword(mdp) {
+      console.log(bcrypt);
+
+      return await bcrypt.hash(mdp, 10);
+      //console.log(hashedPassword);
+    },
     signIn() {
       this.loading = true;
       //const email = this.email;
@@ -74,15 +78,16 @@ export default {
       // });
 
       // const hashedPassword = async () => {
-      //   const hash = await bcrypt.hash(password, 10);        
+      //   const hash = await bcrypt.hash(password, 10);
       // };
-      async function hashpassword(email, mdp) {
-        return await bcrypt.hash(mdp, 10);
-        //console.log(hashedPassword);
-      }      
-      hashpassword(this.password).then(response => {
-        console.log(response);
-      })
+
+      bcrypt.hash(this.password, 10).then(function (hash) {
+        // Store hash in your password DB.
+        console.log(hash);
+      });
+      // this.hashpassword(this.password).then((response) => {
+      //   console.log(response);
+
       // this.$store
       //   .dispatch("recoverToken", {
       //     email: email,
