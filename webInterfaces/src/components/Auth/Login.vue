@@ -11,10 +11,10 @@
         <label for="email">Email</label>
         <input
           type="email"
-          name="username"
-          id="username"
+          name="email"
+          id="email"
           class="login-input"
-          v-model="username"
+          v-model="email"
         />
       </div>
 
@@ -32,14 +32,10 @@
       <div class="form-control">
         <button type="submit" class="btn-submit" :disabled="loading">
           <div class="lds-ring-container" v-if="loading">
-            <div class="lds-ring">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
+            <div class="lds-ring">Chargement
             </div>
           </div>
-          Login
+          <div v-else>Login</div>
         </button>
       </div>
     </form>
@@ -47,6 +43,10 @@
 </template>
 
 <script>
+// import store from '../../store/store';
+// import { mapActions } from 'vuex'
+
+
 export default {
   name: 'signIn',
   props: {
@@ -60,13 +60,14 @@ export default {
       password: '',
       successMessage: this.dataSuccessMessage,
       loading: false,
+      serverError: ''
     }
   },
   methods:{
     signIn(){
       this.loading = true
       this.$store.dispatch('recoverToken',{
-        username: this.username,
+        username: this.email,
         password: this.password,
       })
     

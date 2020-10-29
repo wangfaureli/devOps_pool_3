@@ -7,15 +7,16 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        token: window.localStorage.getItem('access_token') || null,
+        token: window.localStorage.getItem('access_token') || null, 
     },
     mutations: {
       
     },
     actions:{
-        recovertoken(context, credentials){
+        recovertoken(context, credentials) {
+            console.log(credentials);
             return new Promise((resolve, reject) =>{
-                axios.post('/sign_in',{
+                axios.post('/users/sign_in',{
                     email: credentials.email,
                     password: credentials.password,
                 })
