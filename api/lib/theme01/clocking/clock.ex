@@ -1,7 +1,7 @@
 defmodule Theme01.Clocking.Clock do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Theme01.Acounts.User
+  alias Theme01.Account.User
 
   schema "clocks" do
     field :status, :boolean, default: false

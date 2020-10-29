@@ -1,8 +1,8 @@
 defmodule Theme01Web.UserControllerTest do
   use Theme01Web.ConnCase
 
-  alias Theme01.Acount
-  alias Theme01.Acount.User
+  alias Theme01.Account
+  alias Theme01.Account.User
 
   @create_attrs %{
     : "some ",
@@ -17,7 +17,7 @@ defmodule Theme01Web.UserControllerTest do
   @invalid_attrs %{"": nil, email: nil, username: nil}
 
   def fixture(:user) do
-    {:ok, user} = Acount.create_user(@create_attrs)
+    {:ok, user} = Account.create_user(@create_attrs)
     user
   end
 

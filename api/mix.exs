@@ -45,7 +45,10 @@ defmodule Theme01.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:filterable, "~> 0.7.3"},
       {:timex, "~> 3.6"},
-      {:cors_plug, "~> 2.0.2"}
+      {:comeonin, "~> 4.0"},
+      {:bcrypt_elixir, "~> 1.0"},
+      {:cors_plug, "~> 2.0.2"},
+      {:guardian, "~> 2.0"},
     ]
   end
 

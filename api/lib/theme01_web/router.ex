@@ -15,6 +15,10 @@ defmodule Theme01Web.Router do
     post "/workingtimes/:userID", WorkingTimeController, :create
     get "/clocks/:userID", ClockController, :show
     post "/clocks/:userID", ClockController, :create 
+    # resources "/register", UserController, only: [:create, :new]
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
   end
 
   # Enables LiveDashboard only for development
