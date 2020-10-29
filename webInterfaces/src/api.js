@@ -72,6 +72,16 @@ export default {
         });
         // return await response.data.data;
         console.log(response.data);
+    },
+    SignIn: async (email, password) => {
+        const response = await axios.post(`${apiUrl}/users/sign_in`, {
+            user: {                
+                email: email, 
+                password: password
+            }
+        });
+        return await response.data.data;
+        //console.log(response.data);
     }
 
 };
