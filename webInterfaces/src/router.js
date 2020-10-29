@@ -6,6 +6,8 @@ import ClockManager from './components/ClockManager.vue';
 import ChartManager from './components/ChartManager.vue';
 import login from './components/Auth/Login.vue';
 import store from './store/store';
+import axios from "axios";
+import { apiUrl } from "@/settings";
 
 Vue.use(Router);
 const router = new Router({
@@ -46,6 +48,11 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  const getCsrfToken = async () => {
+    const { data } = await axios.get(`${apiUrl}/csrf-token`);
+    axios.defaults.headers.post['c-xsrf-token'] = data.csrfToken;
+   };
+  getCsrfToken (); 
   // redirect to login page if not logged in and trying to access a restricted page
   const { authorize } = to.meta;
   const currentUser = store.state.userId;

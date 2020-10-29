@@ -60,28 +60,22 @@ export default {
     };
   },
   methods: {
-    async hashpassword(mdp) {
-      console.log(bcrypt);
-      return await bcrypt.hash(mdp, 10);
-      //console.log(hashedPassword);
-    },
     signIn() {
       this.loading = true;
       const email = this.email;
-      const password ='';
+      const password = "";
 
-      bcrypt.hash(this.password, 10).then(function (hash) {      
-        console.log(hash);    
-      this.$store
-        .dispatch("recoverToken", {
-          email: email,
-          password: hash
-        })
-        .then(() => {
-          this.$router.push("/");
-          console.log(password);
-        });
-      });        
+      bcrypt.hash(this.password, 10).then((hash) => {
+        this.$store
+          .dispatch("recoverToken", {
+            email: email,
+            password: hash,
+          })
+          .then(() => {
+            this.$router.push("/");
+            console.log(password);
+          });
+      });
     },
   },
 };
