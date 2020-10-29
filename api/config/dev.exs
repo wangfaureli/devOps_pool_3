@@ -1,13 +1,12 @@
 use Mix.Config
 require Logger
 
-Logger.error("coucou #{System.get_env("POSTGRES_DB", "postgres")}")
 # Configure your database
 config :theme01, Theme01.Repo,
   username: System.get_env("POSTGRES_USER", "postgres"),
   password: System.get_env("POSTGRES_PASSWORD", "postgres"),
   database: System.get_env("POSTGRES_DB", "theme01_dev"),
-  hostname: System.get_env("POSTGRES_HOST", "localhost"),
+  hostname: System.get_env("POSTGRES_HOST", "db"),
   # username: "postgres",
   # password: "postgres",
   # database: "theme01_dev",
