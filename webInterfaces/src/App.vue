@@ -31,17 +31,24 @@
               >Chart Manager</router-link
             >
           </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'signIn', params: { userId: 1 } }"
+              class="nav-link"
+              >Login</router-link
+            >
+          </li>
         </ul>
       </div>
     </nav>
 
-    <div v-if="userId">
+    <!-- <div v-if="userId">
       <User />
     </div>
     <div v-else class="d-flex justify-content-center flex-column align-items-center mt-5">
       <h3>Bienvenue sur le Time Manager</h3>
       <p class="">Veuillez selectionner un menu,car vous le constatez, il n'y a rien ici !</p>
-    </div>
+    </div> -->
     <div class="container">
       <router-view></router-view>
     </div>
