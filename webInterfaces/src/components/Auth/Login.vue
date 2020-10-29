@@ -44,7 +44,7 @@
 <script>
 // import store from '../../store/store';
 // import { mapActions } from 'vuex'
-import {bcrypt} from "bcrypt";
+import { bcrypt } from "bcryptjs";
 
 export default {
   name: "signIn",
@@ -62,25 +62,36 @@ export default {
       serverError: "",
     };
   },
-  methods: { 
+  methods: {
     signIn() {
       this.loading = true;
-      const email = this.email;
-      let password;
-      
-      bcrypt.hash(this.password, 10, function (err, hash) {
-        password = hash;
-        console.log(password);
-      });
+      //const email = this.email;
+      //let password = "";
 
-      this.$store
-        .dispatch("recoverToken", {
-          email: email,
-          // password: password,
-        })
-        .then(() => {
-          this.$router.push("/");
-        });
+      // bcrypt.hash(this.password, 10, function (err, hash) {
+      //   password = hash;
+      //   console.log(password);
+      // });
+
+      // const hashedPassword = async () => {
+      //   const hash = await bcrypt.hash(password, 10);        
+      // };
+      async function hashpassword(email, mdp) {
+        return await bcrypt.hash(mdp, 10);
+        //console.log(hashedPassword);
+      }      
+      hashpassword(this.password).then(response => {
+        console.log(response);
+      })
+      // this.$store
+      //   .dispatch("recoverToken", {
+      //     email: email,
+      //     password: async () => {await bcrypt.hash(password, 10); }
+      //   })
+      //   .then(() => {
+      //     this.$router.push("/");
+      //     console.log(password);
+      //   });
     },
   },
 };
