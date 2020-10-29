@@ -25,6 +25,8 @@ defmodule Theme01Web.UserController do
      do: render(conn, "index.json", users: users, meta: filter_values)
   end
 
+
+
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Acount.create_user(user_params) do
       conn
