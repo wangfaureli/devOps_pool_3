@@ -32,8 +32,7 @@
       <div class="form-control">
         <button type="submit" class="btn-submit" :disabled="loading">
           <div class="lds-ring-container" v-if="loading">
-            <div class="lds-ring">Chargement
-            </div>
+            <div class="lds-ring">Chargement</div>
           </div>
           <div v-else>Login</div>
         </button>
@@ -46,32 +45,38 @@
 // import store from '../../store/store';
 // import { mapActions } from 'vuex'
 
-
 export default {
-  name: 'signIn',
+  name: "signIn",
   props: {
     dataSuccessMessage: {
       type: String,
-    }    
+    },
   },
-  data(){
-    return{
-      email: '',
-      password: '',
+  data() {
+    return {
+      email: "",
+      password: "",
       successMessage: this.dataSuccessMessage,
       loading: false,
-      serverError: ''
-    }
+      serverError: "",
+    };
   },
-  methods:{
-    signIn(){
-      this.loading = true
-      this.$store.dispatch('recoverToken',{
-        username: this.email,
-        password: this.password,
-      })
-    
-    }
-  }
+  methods: {
+    signIn() {
+      this.loading = true;
+      const email = this.email;
+      // TODO : hash password with bcrypt
+      const password = this.password;
+
+      this.$store
+        .dispatch("recoverToken", {
+          email: email,
+          password: password,
+        })
+        .then(() => {
+          this.$router.push("/");
+        });
+    },
+  },
 };
 </script>
