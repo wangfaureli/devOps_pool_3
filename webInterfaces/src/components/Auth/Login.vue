@@ -43,7 +43,6 @@
 
 <script>
 import bcrypt from "bcryptjs";
-
 export default {
   name: "signIn",
   props: {
@@ -63,40 +62,26 @@ export default {
   methods: {
     async hashpassword(mdp) {
       console.log(bcrypt);
-
       return await bcrypt.hash(mdp, 10);
       //console.log(hashedPassword);
     },
     signIn() {
       this.loading = true;
-      //const email = this.email;
-      //let password = "";
+      const email = this.email;
+      const password ='';
 
-      // bcrypt.hash(this.password, 10, function (err, hash) {
-      //   password = hash;
-      //   console.log(password);
-      // });
-
-      // const hashedPassword = async () => {
-      //   const hash = await bcrypt.hash(password, 10);
-      // };
-
-      bcrypt.hash(this.password, 10).then(function (hash) {
-        // Store hash in your password DB.
-        console.log(hash);
-      });
-      // this.hashpassword(this.password).then((response) => {
-      //   console.log(response);
-
-      // this.$store
-      //   .dispatch("recoverToken", {
-      //     email: email,
-      //     password: async () => {await bcrypt.hash(password, 10); }
-      //   })
-      //   .then(() => {
-      //     this.$router.push("/");
-      //     console.log(password);
-      //   });
+      bcrypt.hash(this.password, 10).then(function (hash) {      
+        console.log(hash);    
+      this.$store
+        .dispatch("recoverToken", {
+          email: email,
+          password: hash
+        })
+        .then(() => {
+          this.$router.push("/");
+          console.log(password);
+        });
+      });        
     },
   },
 };
