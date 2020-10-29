@@ -31,6 +31,13 @@
               >Chart Manager</router-link
             >
           </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'signIn', params: { userId: 1 } }"
+              class="nav-link"
+              >Login</router-link
+            >
+          </li>
         </ul>
       </div>
     </nav>
