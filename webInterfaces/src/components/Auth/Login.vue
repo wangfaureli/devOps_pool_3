@@ -44,6 +44,7 @@
 <script>
 // import store from '../../store/store';
 // import { mapActions } from 'vuex'
+import {bcrypt} from "bcrypt";
 
 export default {
   name: "signIn",
@@ -61,17 +62,21 @@ export default {
       serverError: "",
     };
   },
-  methods: {
+  methods: { 
     signIn() {
       this.loading = true;
       const email = this.email;
-      // TODO : hash password with bcrypt
-      const password = this.password;
+      let password;
+      
+      bcrypt.hash(this.password, 10, function (err, hash) {
+        password = hash;
+        console.log(password);
+      });
 
       this.$store
         .dispatch("recoverToken", {
           email: email,
-          password: password,
+          // password: password,
         })
         .then(() => {
           this.$router.push("/");
