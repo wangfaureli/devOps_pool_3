@@ -1,7 +1,7 @@
 const { Team } = require('../database/models');
 
 // Get all teams
-exports.getAllTeams = function (req, res) {
+exports.getAll = function (req, res) {
   // const { user_id } = req.params;
 
   Team.findAll({
@@ -14,7 +14,7 @@ exports.getAllTeams = function (req, res) {
 };
 
 // Create new team
-exports.createTeam = function (req, res) {
+exports.create = function (req, res) {
   const name = req.body.team.name;
 
   const newTeam = Team.create({ name: name }).then((team) => {
@@ -23,7 +23,7 @@ exports.createTeam = function (req, res) {
 };
 
 // Delete team
-exports.deleteTeam = function (req, res) {
+exports.delete = function (req, res) {
   const teamId = req.params.team_id;
   console.log(teamId);
   const deleteTeam = Team.destroy({
@@ -36,7 +36,7 @@ exports.deleteTeam = function (req, res) {
 };
 
 // Get one team by team_id
-exports.getTeam = function (req, res) {
+exports.getById = function (req, res) {
   const { team_id } = req.params;
 
   Team.findByPk(team_id).then((team) => {
@@ -45,7 +45,7 @@ exports.getTeam = function (req, res) {
 };
 
 // Update team by team_id
-exports.updateTeam = function (req, res) {
+exports.update = function (req, res) {
   const { team_id } = req.params;
   const teamValues = req.body.team;
 

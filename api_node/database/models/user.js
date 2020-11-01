@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
       });
       User.belongsToMany(models.Team, {
-        through: 'userTeam',
+        through: 'UserTeam',
         as: 'teams',
-        foreignKey: 'User_userId',
+        foreignKey: 'userId',
       });
     }
   }
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       firstname: DataTypes.STRING,
       lastname: DataTypes.STRING,
       birthday: DataTypes.DATE,
-      roleId: DataTypes.STRING,
+      roleId: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -23,6 +23,7 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('UserTeam');
     await queryInterface.dropTable('Teams');
   }
 };

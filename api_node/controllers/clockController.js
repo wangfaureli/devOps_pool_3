@@ -1,7 +1,7 @@
 const { Clock } = require('../database/models');
 
 // Get all clocks by user_id
-exports.getClockByUser = function (req, res) {
+exports.getByUser = function (req, res) {
   const { user_id } = req.params;
 
   Clock.findAll({
@@ -27,7 +27,7 @@ getLastUserClock = (user_id) => {
 };
 
 // Clock In & clock out
-exports.addClockUser = function (req, res) {
+exports.addForUser = function (req, res) {
   const { user_id } = req.params;
 
   // check last clock

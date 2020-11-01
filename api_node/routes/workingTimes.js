@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express();
-const workingTimeController = require('../controllers/WorkingTimeController');
+const workingTime = require('../controllers/WorkingTimeController');
 
 // get all workingtimes by user_id
-router.get('/:user_id', workingTimeController.getWorkingTimesByUser);
-router.get('/:user_id/:workingtime_id', workingTimeController.getByUserAndWorkingTimeId);
-router.post('/:user_id', workingTimeController.createWorkingTime);
-router.put('/:workingtime_id', workingTimeController.updateWorkingTime);
-router.delete('/:workingtime_id', workingTimeController.deleteWorkingTime);
+router.get('/:user_id', workingTime.getByUser);
+router.get('/:user_id/:workingtime_id', workingTime.getByIdAndUser);
+router.post('/:user_id', workingTime.create);
+router.put('/:workingtime_id', workingTime.update);
+router.delete('/:workingtime_id', workingTime.delete);
 
 module.exports = router;

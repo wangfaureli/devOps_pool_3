@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Team.belongsToMany(models.User, {
-        through: "userTeam",
-        as: "users",
-        foreignKey: "Team_teamId",
+        through: "UserTeam",
+        as: "users", 
+        foreignKey: "teamId",
       });
     }
   }

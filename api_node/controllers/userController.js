@@ -4,7 +4,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const jwt = require('../utils/jwt.utils');
 
 // Get one user by user_id
-exports.getUser = function (req, res) {
+exports.getById = function (req, res) {
   const { user_id } = req.params;
 
   User.findByPk(user_id).then((user) => {
@@ -12,7 +12,7 @@ exports.getUser = function (req, res) {
   });
 };
 
-exports.updateUser = function (req, res) {
+exports.update = function (req, res) {
   const { user_id } = req.params;
   const userValues = req.body.user;
 
@@ -31,7 +31,7 @@ exports.updateUser = function (req, res) {
 };
 
 // Authenticate user
-exports.authentication = function (req, res) {
+exports.login = function (req, res) {
   const username = req.body.user.username;
   const password = req.body.user.password;
   // const email = req.body.user.email;
@@ -78,8 +78,8 @@ exports.authentication = function (req, res) {
     });
 };
 
-// Registration user
-exports.registration = function (req, res) {
+// create user
+exports.create = function (req, res) {
   const username = req.body.user.username;
   const password = req.body.user.password;
   const email = req.body.user.email;
@@ -143,7 +143,7 @@ exports.logout = function (req, res) {
 };
 
 // Delete a user
-exports.deleteUser = function (req, res) {
+exports.delete = function (req, res) {
   const userId = req.params.user_id;
 
   const deleteUser = User.destroy({
@@ -156,7 +156,7 @@ exports.deleteUser = function (req, res) {
 };
 
 // Get all users
-exports.getUserList = function (req, res) {
+exports.getAll = function (req, res) {
   const username = req.query.username;
   const email = req.query.email;
 

@@ -1,7 +1,7 @@
 const { WorkingTime } = require('../database/models');
 
 // Create working time
-exports.createWorkingTime = function (req, res) {
+exports.create = function (req, res) {
   const start = req.body.workingtime.start;
   const end = req.body.workingtime.end;
   const userId = req.params.user_id;
@@ -20,7 +20,7 @@ exports.createWorkingTime = function (req, res) {
 };
 
 // Get all working time by user and date
-exports.getWorkingTimesByUser = function (req, res) {
+exports.getByUser = function (req, res) {
   const userId = req.params.user_id;
   let dateStart = req.query.start;
   let dateEnd = req.query.end;
@@ -52,7 +52,7 @@ exports.getWorkingTimesByUser = function (req, res) {
 };
 
 // Get all working time
-exports.getByUserAndWorkingTimeId = function (req, res) {
+exports.getByIdAndUser = function (req, res) {
   const userId = req.params.user_id;
   const workingTimeId = req.params.workingtime_id;
 
@@ -68,7 +68,7 @@ exports.getByUserAndWorkingTimeId = function (req, res) {
   });
 };
 
-exports.updateWorkingTime = function (req, res) {
+exports.update = function (req, res) {
   const workingTimeId = req.params.workingtime_id;
   const workingTimeValues = req.body.workingtime;
 
@@ -82,7 +82,7 @@ exports.updateWorkingTime = function (req, res) {
 };
 
 // Delete working time
-exports.deleteWorkingTime = function (req, res) {
+exports.delete = function (req, res) {
   const workingTimeId = req.params.workingtime_id;
 
   const deleteWorkingTime = WorkingTime.destroy({
