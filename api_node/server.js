@@ -7,6 +7,7 @@ const usersRoutes = require('./routes/users.js');
 const workingTimesRoutes = require('./routes/workingTimes.js');
 const clocksRoutes = require('./routes/clocks.js');
 const teamsRoutes = require('./routes/teams.js');
+const unavailabilitiesRoutes = require('./routes/unavailabilities.js');
 const globalRoutes = require('./routes/globals.js');
 
 const router = express();
@@ -22,6 +23,7 @@ router.use('/api/users', usersRoutes);
 router.use('/api/workingtimes', workingTimesRoutes);
 router.use('/api/clocks', clocksRoutes);
 router.use('/api/teams', teamsRoutes);
+router.use('/api/unavailabilities', unavailabilitiesRoutes);
 router.use('/api/', globalRoutes);
 
 router.listen(PORT, () => {
