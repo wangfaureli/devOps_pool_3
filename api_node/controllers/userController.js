@@ -1,4 +1,4 @@
-const { User } = require('../database/models');
+const { User, Team } = require('../database/models');
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require('jsonwebtoken');
 const jwt = require('../utils/jwt.utils');
@@ -7,8 +7,78 @@ const jwt = require('../utils/jwt.utils');
 exports.getById = function (req, res) {
   const { user_id } = req.params;
 
-  User.findByPk(user_id).then((user) => {
+  User.findByPk(user_id, {
+    include: [
+      {
+        model: Team,
+        as: 'teams',
+      },
+    ],
+  }).then((user) => {
     res.json(user);
+  });
+};
+
+// Add team in user
+exports.updateTeams = function (req, res) {
+  const { user_id } = req.params;
+  const { teams } = req.body;
+
+  if (teams && teams.length > 0) {
+    const userFound = User.findByPk(user_id, {
+      include: [
+        {
+          model: Team,
+          as: 'teams',
+        },
+      ],
+    }).then((user) => {
+      user.setTeams(teams);
+      res.json(user.teams);
+    });
+  }
+
+  // let userTeams = [];
+
+  // if (teams && teams.length > 0) {
+  //   const userFound = User.findByPk(user_id, {
+  //     include: [
+  //       {
+  //         model: Team,
+  //         as: 'teams',
+  //       },
+  //     ],
+  //   }).then((user) => {
+  //     user.teams.map((team) => {
+  //       userTeams.push(team.UserTeam.dataValues.teamId);
+  //     })
+  //     userTeams = userTeams.concat(teams);
+
+  //     userTeams = userTeams.filter(function(item, pos) {
+  //       return userTeams.indexOf(item) == pos;
+  //     })
+
+  //     user.setTeams(userTeams).then(() => {
+  //       res.json(user.teams);
+  //     });
+
+  //   });
+};
+
+// Get users by team
+exports.getTeam = function (req, res) {
+  const { user_team } = req.params;
+
+  User.findAll({
+    include: [
+      {
+        model: Team,
+        as: 'teams',
+        where: { '$teams.UserTeam.teamId$': user_team },
+      },
+    ],
+  }).then((users) => {
+    res.json(users);
   });
 };
 
@@ -138,8 +208,7 @@ exports.create = function (req, res) {
 exports.logout = function (req, res) {
   res.clearCookie('jwt_token');
   res.clearCookie('csrf_token');
-  res.json({message: 'User disconnected'});
-
+  res.json({ message: 'User disconnected' });
 };
 
 // Delete a user
@@ -178,7 +247,14 @@ exports.getAll = function (req, res) {
     });
   } else {
     // return all users
-    User.findAll().then((users) => {
+    User.findAll({
+      include: [
+        {
+          model: Team,
+          as: 'teams',
+        },
+      ],
+    }).then((users) => {
       res.json(users);
     });
   }
@@ -196,7 +272,6 @@ verifyToken = function (req, res) {
 
   //check jwt
   jsonwebtoken.verify(jwtToken, csrfToken, function (err, jwtValues) {
-
     if (jwtValues.csrfToken == csrfToken) {
       // allright
       console.log('true');
