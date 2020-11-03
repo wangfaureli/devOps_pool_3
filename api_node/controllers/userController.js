@@ -1,4 +1,4 @@
-const { User, Team } = require('../database/models');
+const { User, Team, Role } = require('../database/models');
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require('jsonwebtoken');
 const userController = require('./userController');
@@ -13,6 +13,10 @@ exports.getById = function (req, res) {
       {
         model: Team,
         as: 'teams',
+      },
+      {
+        model: Role,
+        as: 'role',
       },
     ],
   }).then((user) => {
@@ -114,6 +118,12 @@ exports.login = function (req, res) {
 
   User.findOne({
     where: { username: username },
+    include: [
+      {
+        model: Role,
+        as: 'role',
+      },
+    ],
   })
     .then((userFound) => {
       if (userFound) {
@@ -182,25 +192,19 @@ exports.create = function (req, res) {
     },
   }).then((userExist) => {
     if (!userExist) {
-      bcrypt.hash(password, 6, (err, passwordHashed) => {
-        const newUser = User.create({
-          username: username,
-          password: passwordHashed,
-          email: email,
-          firstname: firstname,
-          lastname: lastname,
-          birthday: birthday,
-          roleId: roleId,
-        })
-          .then((newUser) => {
-            res.status(201).json({ userCreated: newUser });
-          })
-          .catch((err) => {
-            res.status(500).json({ error: "can't add user" });
-          });
+      const newUser = User.create({
+        username: username,
+        password: password,
+        email: email,
+        firstname: firstname,
+        lastname: lastname,
+        birthday: birthday,
+        roleId: roleId,
+      }).then((user) => {
+        res.status(201).json({ user });
       });
     } else {
-      res.status(409).json({ error: 'user already exist in db' });
+      res.status(409).json({ error: 'User already exist in db' });
     }
   });
 };
@@ -287,8 +291,7 @@ exports.decryptToken = function (req, res) {
 
 exports.getUserConnected = function (req, res) {
   const dataToken = userController.decryptToken(req, res);
-  const userId = dataToken.userId;
-  return userId;
+  return dataToken;
 };
 
 exports.checkUserData = function (req, res) {

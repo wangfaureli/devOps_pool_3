@@ -3,6 +3,8 @@ const userController = require('../controllers/userController');
 
 // Get all clocks by user_id
 exports.getByUser = function (req, res) {
+  const { roleId } = userController.getUserConnected(req, res);
+
   const { user_id } = req.params;
 
   Clock.findAll({
@@ -29,7 +31,7 @@ getLastUserClock = (user_id) => {
 
 // Clock In & clock out
 exports.addForUser = function (req, res) {
-  const user_id = userController.getUserConnected(req, res);
+  const { user_id } = userController.getUserConnected(req, res);
 
   // check last clock
   this.getLastUserClock(user_id).then((clocks) => {

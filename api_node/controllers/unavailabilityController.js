@@ -18,7 +18,7 @@ exports.getAll = function (req, res) {
 exports.create = function (req, res) {
   const { start, end, reason } = req.body.unavailability;
 
-  const userId = userController.getUserConnected(req, res);
+  const { userId } = userController.getUserConnected(req, res);
 
   const newUnavailability = Unavailability.create({
     start: start,

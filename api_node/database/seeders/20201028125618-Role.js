@@ -7,21 +7,19 @@ module.exports = {
       [
         {
           name: 'Administrator',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          name: 'Top Manager',
+          level: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           name: 'Manager',
+          level: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           name: 'Employee',
+          level: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
