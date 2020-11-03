@@ -117,7 +117,10 @@ exports.login = function (req, res) {
   }
 
   User.findOne({
-    where: { username: username },
+    where: {
+      username: username,
+      password: password,
+    },
     include: [
       {
         model: Role,
@@ -127,31 +130,25 @@ exports.login = function (req, res) {
   })
     .then((userFound) => {
       if (userFound) {
-        bcrypt.compare(password, userFound.password, (errBcrypt, resBcrypt) => {
-          if (resBcrypt) {
-            const jwtToken = jwt.generateJwtToken(userFound);
-            const csrfToken = jwt.generateCsrfToken();
+        const jwtToken = jwt.generateJwtToken(userFound);
+        const csrfToken = jwt.generateCsrfToken();
 
-            // Creates a cookie which expires after 30 day
-            const oneMonth = 24 * 60 * 60 * 30;
+        // Creates a cookie which expires after 30 day
+        const oneMonth = 24 * 60 * 60 * 30;
 
-            res
-              .cookie('jwt_token', jwtToken, {
-                maxAge: oneMonth,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production' ? true : false,
-              })
-              .cookie('csrf_token', csrfToken, {
-                maxAge: oneMonth,
-                secure: process.env.NODE_ENV === 'production' ? true : false,
-              })
-              .json({ message: 'user connected' });
-          } else {
-            res.status(500).json({ error: 'fail password' });
-          }
-        });
+        res
+          .cookie('jwt_token', jwtToken, {
+            maxAge: oneMonth,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+          })
+          .cookie('csrf_token', csrfToken, {
+            maxAge: oneMonth,
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+          })
+          .json({ message: 'user connected' });
       } else {
-        res.status(500).json({ error: 'user not exist in db' });
+        res.status(500).json({ error: 'fail connection' });
       }
     })
     .catch((err) => {

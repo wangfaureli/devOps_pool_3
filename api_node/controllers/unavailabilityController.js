@@ -1,7 +1,7 @@
 const { Unavailability } = require('../database/models');
 const userController = require('../controllers/userController');
 
-// Get all teams
+// Get all unavailability
 exports.getAll = function (req, res) {
   const { userId, roleLevel } = userController.getUserConnected(req, res);
 
@@ -23,10 +23,9 @@ exports.getAll = function (req, res) {
   }
 };
 
-// Create new team
+// Create new unavailability
 exports.create = function (req, res) {
   const { start, end, reason } = req.body.unavailability;
-
   const { userId } = userController.getUserConnected(req, res);
 
   const newUnavailability = Unavailability.create({
@@ -39,29 +38,57 @@ exports.create = function (req, res) {
   });
 };
 
-// Delete team
+// Delete unavailability
 exports.delete = function (req, res) {
   const unavailabilityId = req.params.unavailability_id;
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
 
-  const deleteUnavailability = Unavailability.destroy({
-    where: {
-      id: unavailabilityId,
-    },
-  }).then((unavailability) => {
-    res.json({ message: 'unavailability deleted' });
-  });
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    const deleteUnavailability = Unavailability.destroy({
+      where: {
+        id: unavailabilityId,
+      },
+    }).then((unavailability) => {
+      res.json({ message: 'unavailability deleted' });
+    });
+  } else {
+    const deleteUnavailability = Unavailability.destroy({
+      where: {
+        id: unavailabilityId,
+        userId: userId,
+      },
+    }).then((unavailability) => {
+      res.json({ message: 'unavailability deleted' });
+    });
+  }
 };
 
-// Get one team by unavailability_id
+// Get one unavailability by unavailability_id
 exports.getById = function (req, res) {
   const { unavailability_id } = req.params;
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
 
-  Unavailability.findByPk(unavailability_id).then((unavailability) => {
-    res.json(unavailability);
-  });
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    Unavailability.findOne({
+      where: { id: unavailability_id },
+    }).then((unavailability) => {
+      res.json(unavailability);
+    });
+  } else {
+    Unavailability.findOne({
+      where: {
+        id: unavailability_id,
+        userId: userId,
+      },
+    }).then((unavailability) => {
+      res.json(unavailability);
+    });
+  }
 };
 
-// Update team by unavailability_id
+// Update unavailability by unavailability_id
 exports.update = function (req, res) {
   const { unavailability_id } = req.params;
   const unavailabilityValues = req.body.unavailability;
