@@ -51,7 +51,7 @@ module.exports = {
         },
         {
           username: 'popol',
-          password: 'aaa',
+          password: '$2a$06$IMYYTt4GQOtcxdJyACik1.qskLjYU0GQRcYpGdYfqxEIDqugb4Nry',
           firstname: 'Paul',
           lastname: 'Polochon',
           email: 'popol@gmail.com',

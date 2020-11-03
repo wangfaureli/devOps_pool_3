@@ -2,6 +2,11 @@ const express = require('express');
 const router = express();
 const unavailability = require('../controllers/unavailabilityController');
 
+/**
+ * Prefix des url : 
+ * 
+ * http://localhost:4000/api/unavailabilities
+*/
 router.get('/', unavailability.getAll);
 router.post('/', unavailability.create);
 router.get('/:unavailability_id', unavailability.getById);

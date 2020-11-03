@@ -1,4 +1,5 @@
 const { Team } = require('../database/models');
+const userController = require('../controllers/userController');
 
 // Get all teams
 exports.getAll = function (req, res) {

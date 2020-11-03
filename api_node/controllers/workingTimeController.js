@@ -1,4 +1,5 @@
 const { WorkingTime } = require('../database/models');
+const userController = require('../controllers/userController');
 
 // Create working time
 exports.create = function (req, res) {
@@ -6,28 +7,45 @@ exports.create = function (req, res) {
   const end = req.body.workingtime.end;
   const userId = req.params.user_id;
 
-  const newWorkingTime = WorkingTime.create({
-    start: start,
-    end: end,
-    userId: userId,
-  })
-    .then((workingtime) => {
-      res.json({ message: 'new workingTime inserted' });
+  // check role user connected
+  const { roleLevel } = userController.getUserConnected(req, res);
+
+  // admin or manager
+  if (roleLevel == 1 || roleLevel == 2) {
+    const newWorkingTime = WorkingTime.create({
+      start: start,
+      end: end,
+      userId: userId,
     })
-    .catch((err) => {
-      res.json({ err });
-    });
+      .then((workingtime) => {
+        res.json({ message: 'new workingTime inserted' });
+      })
+      .catch((err) => {
+        res.json({ err });
+      });
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
+  }
 };
 
 // Get all working time by user and date
 exports.getByUser = function (req, res) {
-  const userId = req.params.user_id;
   let dateStart = req.query.start;
   let dateEnd = req.query.end;
   // let dateStart = req.body.workingtime.start;
   // let dateEnd = req.body.workingtime.end;
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
 
-  if (!dateStart) { 
+  let user_id;
+
+  // check if is employee
+  if (roleLevel == 3) {
+    user_id = userId;
+  } else {
+    user_id = req.params.user_id;
+  }
+
+  if (!dateStart) {
     dateStart = '1900-01-01 00:00:00';
   }
   if (!dateEnd) {
@@ -37,7 +55,7 @@ exports.getByUser = function (req, res) {
 
   WorkingTime.findAll({
     where: {
-      userId: userId,
+      userId: user_id,
       start: {
         [Op.gte]: dateStart,
       },
@@ -53,14 +71,21 @@ exports.getByUser = function (req, res) {
 
 // Get all working time
 exports.getByIdAndUser = function (req, res) {
-  const userId = req.params.user_id;
   const workingTimeId = req.params.workingtime_id;
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
 
-  // if date start or end in body url
+  let user_id;
+
+  // check if is employee
+  if (roleLevel == 3) {
+    user_id = userId;
+  } else {
+    user_id = req.params.user_id;
+  }
 
   WorkingTime.findAll({
     where: {
-      userId: userId,
+      userId: user_id,
       id: workingTimeId,
     },
   }).then((workingTimes) => {
@@ -72,24 +97,38 @@ exports.update = function (req, res) {
   const workingTimeId = req.params.workingtime_id;
   const workingTimeValues = req.body.workingtime;
 
-  WorkingTime.update(workingTimeValues, {
-    where: {
-      id: workingTimeId,
-    },
-  }).then((workingtime) => {
+  const { roleLevel } = userController.getUserConnected(req, res);
+
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    WorkingTime.update(workingTimeValues, {
+      where: {
+        id: workingTimeId,
+      },
+    }).then((workingtime) => {
       res.json({ message: 'workingTime edited' });
-  });
+    });
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
+  }
 };
 
 // Delete working time
 exports.delete = function (req, res) {
   const workingTimeId = req.params.workingtime_id;
 
-  const deleteWorkingTime = WorkingTime.destroy({
-    where: {
-      id: workingTimeId,
-    },
-  }).then((workingTime) => {
-    res.json({ message: 'working time deleted' });
-  });
+  const { roleLevel } = userController.getUserConnected(req, res);
+
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    const deleteWorkingTime = WorkingTime.destroy({
+      where: {
+        id: workingTimeId,
+      },
+    }).then((workingTime) => {
+      res.json({ message: 'working time deleted' });
+    });
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
+  }
 };

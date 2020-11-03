@@ -3,9 +3,15 @@ const userController = require('../controllers/userController');
 
 // Get all clocks by user_id
 exports.getByUser = function (req, res) {
-  const { roleId } = userController.getUserConnected(req, res);
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
 
-  const { user_id } = req.params;
+  let user_id;
+
+  if (roleLevel == 3) {
+    user_id = userId;
+  } else {
+    user_id = req.params.user_id;
+  }
 
   Clock.findAll({
     where: {
@@ -42,7 +48,7 @@ exports.addForUser = function (req, res) {
     }
 
     let newClockValue;
-    
+
     // 1 = work in progress
     // 0 = work ended
 
@@ -54,6 +60,6 @@ exports.addForUser = function (req, res) {
     }
 
     const newClock = Clock.create({ status: newClockValue, userId: user_id });
-    res.json({message: "Inserted"});
+    res.json({ message: 'Inserted' });
   });
 };

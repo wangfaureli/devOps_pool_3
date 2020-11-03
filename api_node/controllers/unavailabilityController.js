@@ -3,15 +3,24 @@ const userController = require('../controllers/userController');
 
 // Get all teams
 exports.getAll = function (req, res) {
-  // const { user_id } = req.params;
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
 
-  Unavailability.findAll({
-    where: {
-      // userId: user_id,
-    },
-  }).then((unavailability) => {
-    res.json(unavailability);
-  });
+  // check if is employee
+  if (roleLevel == 3) {
+    Unavailability.findAll({
+      where: {
+        userId: userId,
+      },
+    }).then((unavailability) => {
+      res.json(unavailability);
+    });
+  } else {
+    Unavailability.findAll({
+      where: {},
+    }).then((unavailability) => {
+      res.json(unavailability);
+    });
+  }
 };
 
 // Create new team
@@ -24,7 +33,7 @@ exports.create = function (req, res) {
     start: start,
     end: end,
     reason: reason,
-    userId: userId
+    userId: userId,
   }).then((unavailability) => {
     res.json({ message: 'new unavailability inserted' });
   });

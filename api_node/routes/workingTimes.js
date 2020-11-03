@@ -2,7 +2,11 @@ const express = require('express');
 const router = express();
 const workingTime = require('../controllers/WorkingTimeController');
 
-// get all workingtimes by user_id
+/**
+ * Prefix des url : 
+ * 
+ * http://localhost:4000/api/workingtimes
+*/
 router.get('/:user_id', workingTime.getByUser);
 router.get('/:user_id/:workingtime_id', workingTime.getByIdAndUser);
 router.post('/:user_id', workingTime.create);
