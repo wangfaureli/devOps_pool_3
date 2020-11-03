@@ -1,7 +1,7 @@
 <template>
     <div id="conteneur">
         <div class="center content-inputs">
-            <h5> My Informations :</h5>
+            <h5> Create my account :</h5>
             <vs-input
             state="dark"
             primary
@@ -52,7 +52,7 @@
                     :active="active == 0"
                     @click="active = 0"
                 >
-                    <b>Valid Changes</b>
+                    <b>Confirm</b>
                 </vs-button>
             </div>
         </div>
@@ -60,7 +60,6 @@
 </template>
 
 <script>
-    import api from "@/api";
     export default {
          data:() => ({
         value1: '',
@@ -71,21 +70,6 @@
         value6: '',
         value7: ''
       }),
-        async mounted() {
-            await this.userId;
-            this.user = await api.getUser(this.userId);
-            this.users = await api.getUsers();
-            this.userSelected = this.user;
-        },
-        methods: {
-            getUserPage(user) {
-            let currentRoute = this.$route.matched[0].path;
-            let currentRegex = /:userId/gi;
-            let gotoRoute = currentRoute.replace(currentRegex, user);
-            this.$router.push(gotoRoute);
-            this.$router.go();
-            }
-        }
     }
 </script>
 <style>

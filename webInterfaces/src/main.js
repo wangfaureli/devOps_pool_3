@@ -9,6 +9,8 @@ import ClockManager from './components/Clock.vue';
 import Account from './components/Account.vue';
 import Dashboard from './components/Dashboard.vue'
 import Absences from './components/Absences.vue'
+import ForgotPassword from './components/ForgotPassword.vue'
+import CreateAccount from './components/CreateAccount.vue'
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 
@@ -20,6 +22,16 @@ Vue.use(Router);
 const router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/ChangePassword/',
+      name: 'ChangePassword',
+      component: ForgotPassword,
+    },
+    {
+      path: '/CreateAccount/',
+      name: 'CreateAccount',
+      component: CreateAccount,
+    },
     {
       path: '/workingTimes/:userId',
       name: 'workingTimes',

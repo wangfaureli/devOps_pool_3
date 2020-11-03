@@ -1,13 +1,18 @@
 <template>
   <div id="conteneur">
     <div id="main">
-      <h1> ClockManager!</h1>
-      <h6> UserID envoyé en paramètre : <b>{{ userId }}</b></h6>   
       <div class="time"><h4>{{ time }}</h4></div>
-      <button type="button" class="btn btn-primary btn-lg" disabled>{{formatTime}}</button>
-      <div class="btn-container">
-        <vs-button flat type="button" class="bouton" @click="Start()" v-if="!clockIn">Start</vs-button>
-        <vs-button flat type="button" class="bouton" @click="Stop()" v-if="clockIn">Stop</vs-button>      
+        <div v-if="!started">
+          <div class="btn-container">
+            <vs-input state="dark" primary placeholder="Code"/>
+            <vs-button flat type="button" class="bouton" @click="Start()" v-if="!started">Start</vs-button>
+          </div>   
+      </div>
+        <div v-if="started">
+          <button type="button" class="btn btn-primary btn-lg" disabled>{{formatTime}}</button>
+          <div class="btn-container">
+            <vs-button flat type="button" class="bouton" @click="Stop()" v-if="clockIn">Stop</vs-button>  
+          </div>   
       </div>
     </div>
   </div>
@@ -27,6 +32,7 @@ export default {
       formatTime: '00:00:00',
       startDateTime: "",
       clockIn: false,
+      started: false,
       startingTime: 0,                 
       ticker: undefined
     };
@@ -64,6 +70,7 @@ export default {
     Start(){
       if(this.timeState !== 'Running')
       {
+        this.started = true;
         this.timeState = 'Running';
         this.refresh();
         this.Tick();
@@ -72,10 +79,12 @@ export default {
       }
     },    
     Stop(){
-      window.clearInterval(this.ticker);      
+      window.clearInterval(this.ticker);   
       this.timeState = 'Paused';
       this.refresh();
       this.clock();
+      this.Reset();
+      this.started = false;   
     },
     Reset(){
       window.clearInterval(this.ticker);

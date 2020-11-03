@@ -1,7 +1,7 @@
 <template>
     <div id="conteneur">
         <div class="center content-inputs">
-            <h5> My Informations :</h5>
+            <h5> Change Password :</h5>
             <vs-input
             state="dark"
             primary
@@ -22,28 +22,16 @@
             />
             <vs-input
             state="dark"
-            primary
-            placeholder="Company"
-            v-model="value4"
-            />
-            <vs-input
-            state="dark"
-            primary
-            placeholder="Department"
-            v-model="value5"
-            />
-            <vs-input
-            state="dark"
             primary 
             type="password" 
-            v-model="value6" 
+            v-model="value4" 
             placeholder="New Password"
             />
             <vs-input
             state="dark" 
             primary
             type="password" 
-            v-model="value7" 
+            v-model="value5" 
             placeholder="Confirm Password"
             />
             <div id="bouton">
@@ -52,7 +40,7 @@
                     :active="active == 0"
                     @click="active = 0"
                 >
-                    <b>Valid Changes</b>
+                    <b>Confirm</b>
                 </vs-button>
             </div>
         </div>
@@ -60,32 +48,14 @@
 </template>
 
 <script>
-    import api from "@/api";
     export default {
          data:() => ({
         value1: '',
         value2: '',
         value3: '',
         value4: '',
-        value5: '',
-        value6: '',
-        value7: ''
+        value5: ''
       }),
-        async mounted() {
-            await this.userId;
-            this.user = await api.getUser(this.userId);
-            this.users = await api.getUsers();
-            this.userSelected = this.user;
-        },
-        methods: {
-            getUserPage(user) {
-            let currentRoute = this.$route.matched[0].path;
-            let currentRegex = /:userId/gi;
-            let gotoRoute = currentRoute.replace(currentRegex, user);
-            this.$router.push(gotoRoute);
-            this.$router.go();
-            }
-        }
     }
 </script>
 <style>
