@@ -34,7 +34,6 @@ export default {
         });
         return await response.data.data;
     },
-
     getUserClocks: async (userId) => {
         const response = await axios.get(`${apiUrl}/clocks/${userId}`);
         return await response.data.data;
@@ -74,7 +73,7 @@ export default {
         console.log(response.data);
     },
     SignIn: async (email, password) => {
-        const response = await axios.post(`${apiUrl}/users/sign_in`, {
+        const response = await axios.post(`${apiUrl}/login`, {
             user: {                
                 email: email, 
                 password: password

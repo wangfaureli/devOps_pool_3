@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import bcrypt from "bcryptjs";
+//import bcrypt from "bcryptjs";
 export default {
   name: "signIn",
   props: {
