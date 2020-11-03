@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'workingtimes',
         onDelete: 'CASCADE',
       });
+      User.hasMany(models.Unavailability, {
+        foreignKey: 'userId',
+        as: 'unavailabilities',
+        onDelete: 'CASCADE',
+      });
       User.belongsTo(models.Role, {
         foreignKey: 'roleId',
         as: 'role',

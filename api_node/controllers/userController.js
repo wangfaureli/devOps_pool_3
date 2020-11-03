@@ -1,6 +1,7 @@
 const { User, Team } = require('../database/models');
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require('jsonwebtoken');
+const userController = require('./userController');
 const jwt = require('../utils/jwt.utils');
 
 // Get one user by user_id
@@ -260,26 +261,37 @@ exports.getAll = function (req, res) {
   }
 };
 
-verifyToken = function (req, res) {
-  //get xsrf token
+exports.decryptToken = function (req, res) {
   const csrfToken = req.cookies.csrf_token;
-  //get jwt cookie
   const jwtToken = req.cookies.jwt_token;
 
   if (!jwtToken) {
     res.sendStatus(401);
   }
 
+  let returned;
+
   //check jwt
   jsonwebtoken.verify(jwtToken, csrfToken, function (err, jwtValues) {
     if (jwtValues.csrfToken == csrfToken) {
-      // allright
-      console.log('true');
-      return true;
+      // res.json({ userId: jwtValues.userId, roleId: jwtValues.roleId });
+      // return jwtValues;
+      returned = jwtValues;
     } else {
       //csrf attack
-      console.log('false');
-      return false;
+      returned = 'error';
     }
   });
+  return returned;
+};
+
+exports.getUserConnected = function (req, res) {
+  const dataToken = userController.decryptToken(req, res);
+  const userId = dataToken.userId;
+  return userId;
+};
+
+exports.checkUserData = function (req, res) {
+  const dataToken = userController.decryptToken(req, res);
+  res.json({ userId: dataToken.userId, roleId: dataToken.roleId });
 };

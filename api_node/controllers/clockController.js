@@ -1,4 +1,5 @@
 const { Clock } = require('../database/models');
+const userController = require('../controllers/userController');
 
 // Get all clocks by user_id
 exports.getByUser = function (req, res) {
@@ -28,11 +29,15 @@ getLastUserClock = (user_id) => {
 
 // Clock In & clock out
 exports.addForUser = function (req, res) {
-  const { user_id } = req.params;
+  const user_id = userController.getUserConnected(req, res);
 
   // check last clock
   this.getLastUserClock(user_id).then((clocks) => {
-    lastClock = clocks[0].dataValues.status;
+    if (clocks.length > 0) {
+      lastClock = clocks[0].dataValues.status;
+    } else {
+      lastClock = 0;
+    }
 
     let newClockValue;
     

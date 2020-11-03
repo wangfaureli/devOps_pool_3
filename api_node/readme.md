@@ -11,11 +11,8 @@
 - Run PostgreSql server
 - Run `createdb -U postgres timemanager_api_dev` to create the database
 - Run `sequelize db:migrate` to create or update table from migrations
+- Run `npm start` to start the server and create db associations
 - Run `sequelize db:seed:all` to import default data in tables
-
-## Start Server
-
-- Run `npm start`
 
 ## Informations
 - To create PostgreSQL database :
