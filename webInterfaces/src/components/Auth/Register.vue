@@ -52,29 +52,10 @@ export default {
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          // eslint-disable-next-line
-          //this.register()
+          //variable à gérer pour l'inscription par admin
         }
       })
     },
-    // register() {
-    //   this.$store.dispatch('register', {
-    //     name: this.name,
-    //     email: this.email,
-    //     password: this.password,
-    //   })
-    //     .then(response => {
-    //       this.successMessage = 'Registered Successfully!'
-    //       this.$router.push({ name: 'login', params: { dataSuccessMessage: this.successMessage } })
-    //       this.$toast.success({
-    //         title: this.successMessage,
-    //         message: 'You can login here'
-    //       })
-    //     })
-    //     .catch(error => {
-    //       this.serverErrors = Object.values(error.response.data.errors)
-    //     })
-    // }
   }
 }
 </script>

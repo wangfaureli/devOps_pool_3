@@ -37,14 +37,7 @@
               class="nav-link"
               >Login</router-link
             >
-          </li>
-          <li class="nav-item">
-            <router-link
-              :to="{ name: 'register', params: { userId: 1 } }"
-              class="nav-link"
-              >Register</router-link
-            >
-          </li>
+          </li>          
         </ul>
       </div>
     </nav>
