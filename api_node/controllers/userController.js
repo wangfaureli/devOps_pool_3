@@ -177,7 +177,7 @@ exports.login = function (req, res) {
               })
               .json({ message: 'user connected' });
           } else {
-            res.status(500).json({ errBcrypt });
+            res.status(500).json({ error: 'Password error' });
           }
         });
       } else {
@@ -185,7 +185,7 @@ exports.login = function (req, res) {
       }
     })
     .catch((err) => {
-      res.status(500).json({ error: 'Password error' });
+      res.status(500).json(err);
     });
 };
 

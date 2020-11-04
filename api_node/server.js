@@ -36,3 +36,5 @@ router.get('/', (req, res) => {
   // return routes on home
   res.send(listEndpoints(router));
 });
+
+module.exports = router
