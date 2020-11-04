@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class=" navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link
@@ -37,7 +37,7 @@
               class="nav-link"
               >Login</router-link
             >
-          </li>
+          </li>          
         </ul>
       </div>
     </nav>

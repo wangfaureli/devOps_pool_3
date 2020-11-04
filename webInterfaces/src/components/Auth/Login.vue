@@ -8,13 +8,13 @@
       <div v-if="serverError" class="server-error">{{ serverError }}</div>
 
       <div class="form-control">
-        <label for="email">Email</label>
+        <label for="username">Username</label>
         <input
-          type="email"
-          name="email"
-          id="email"
+          type="username"
+          name="username"
+          id="username"
           class="login-input"
-          v-model="email"
+          v-model="username"
         />
       </div>
 
@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
       successMessage: this.dataSuccessMessage,
       loading: false,
@@ -62,20 +62,27 @@ export default {
   methods: {
     signIn() {
       this.loading = true;
-      const email = this.email;
-      const password = "";
-
-      bcrypt.hash(this.password, 10).then((hash) => {
-        this.$store
-          .dispatch("recoverToken", {
-            email: email,
-            password: hash,
+      const username = this.username;   
+      
+      this.$store
+          .dispatch("recoverUserInfo", {
+            username: username,
+            password: this.password,
           })
-          .then(() => {
-            this.$router.push("/");
-            console.log(password);
+          .then(() => {            
+            //this.$router.push("/");            
           });
-      });
+
+      // bcrypt.hash(this.password, 6).then((hash) => {
+      //   this.$store
+      //     .dispatch("recoverUserInfo", {
+      //       username: username,
+      //       password: hash,
+      //     })
+      //     .then(() => {
+      //       this.$router.push("/");            
+      //     });
+      // });
     },
   },
 };

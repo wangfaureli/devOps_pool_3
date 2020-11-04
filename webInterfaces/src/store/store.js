@@ -1,42 +1,60 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-//import axios from 'axios';
+import Vue from "vue";
+import Vuex from "vuex";
+//import axios from "axios";
 import { apiUrl } from "../settings.js";
 // import { reject } from 'core-js/fn/promise';
 
 Vue.use(Vuex);
 
-
-const store = new Vuex.Store({ 
+const store = new Vuex.Store({
   state: {
-    xsrfToken: window.localStorage.getItem('access_token') || null,
-    userId: window.localStorage.getItem('user_id') || null,
-    roleId: window.localStorage.getItem('role_id') || null,
+    userId: window.localStorage.getItem("user_id") || null,
+    roleLevel: window.localStorage.getItem("roleLevel") || null,
+    IsUserAuthenticated: false,
   },
   mutations: {},
   actions: {
-    recoverToken(context, credentials) {
-      console.log(credentials);
+    recoverUserInfo(context, info) {
+      console.log(info);
       let data = JSON.stringify({
-        "user":{
-          username: credentials.username,
-          password: credentials.password
-        }
+        user: {
+          username: info.username,
+          password: info.password,
+        },
       });
 
-      (async () => {
-        const rawResponse = await fetch(`${apiUrl}/login`, {
-          method: 'POST',
+        fetch(`${apiUrl}/login`, {
+          method: "POST",
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "http://localhost:4000",
           },
-          body: data
+          //credentials: 'include',
+          body: data,
+        }).then((resp) => {
+          console.log(resp)
+          // const content = await rawResponse.json();
+          // console.log(content["message"]);
+  
+          // if (content["message"] == "user connected") {
+          //   this.dispatch("beforeEach", {});
+          // }
+
+
+          fetch(`${apiUrl}/check-token`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: '',
+          }).then((test) => {
+  
+            // const content = rawResponse.json();
+            console.log(test);      
+          });
         });
-        const content = await rawResponse.json();
-      
-        console.log(content);
-      })()
 
       // return new Promise((resolve, reject) => {
       //   axios
@@ -57,9 +75,26 @@ const store = new Vuex.Store({
       // });
     },
 
-    beforeEach(){
+    // beforeEach() {
+    //   this.state.IsUserAuthenticated = true;
+
+    //     fetch(`${apiUrl}/check-token`, {
+    //       method: "POST",
+    //       headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: '',
+    //     }).then((test) => {
+
+    //       // const content = rawResponse.json();
+    //       console.log(test);      
+    //     });
+
+        
       
-    }
+      
+    // },
   },
 });
 
