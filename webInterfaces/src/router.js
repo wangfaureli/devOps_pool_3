@@ -37,7 +37,7 @@ const router = new Router({
       component: WorkingTime,
     },
     {
-      path: '/clock/:userId',
+      path: '/clocks',
       name: 'clock',
       component: ClockManager,
     },
@@ -61,7 +61,7 @@ const router = new Router({
       name: 'register',
       component: register,
     },
-    { path: '/', redirect: '/' },
+    { path: '/', redirect: '/clocks' },
   ],
 });
 
