@@ -3,9 +3,11 @@ import App from './App.vue';
 import Router from 'vue-router';
 import router from './router';
 import store from './store/store';
+import Vuesax from 'vuesax';
+import 'vuesax/dist/vuesax.css';
 
+Vue.use(Vuesax);
 Vue.use(Router);
-
 
 Vue.prototype.userId = '';
 

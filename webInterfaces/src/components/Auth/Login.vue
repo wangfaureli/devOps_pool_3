@@ -42,7 +42,7 @@
 </template>
 
 <script>
-//import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 export default {
   name: "signIn",
   props: {
@@ -73,16 +73,16 @@ export default {
             //this.$router.push("/");            
           });
 
-      // bcrypt.hash(this.password, 6).then((hash) => {
-      //   this.$store
-      //     .dispatch("recoverUserInfo", {
-      //       username: username,
-      //       password: hash,
-      //     })
-      //     .then(() => {
-      //       this.$router.push("/");            
-      //     });
-      // });
+      bcrypt.hash(this.password, 6).then((hash) => {
+        this.$store
+          .dispatch("recoverUserInfo", {
+            username: username,
+            password: hash,
+          })
+          .then(() => {
+            this.$router.push("/");            
+          });
+      });
     },
   },
 };

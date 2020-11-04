@@ -4,6 +4,12 @@ import WorkingTimes from './components/WorkingTimes.vue';
 import WorkingTime from './components/WorkingTime.vue';
 import ClockManager from './components/ClockManager.vue';
 import ChartManager from './components/ChartManager.vue';
+import Clock from './components/Clock.vue';
+import Account from './components/Account.vue';
+import Dashboard from './components/Dashboard.vue'
+import Absences from './components/Absences.vue'
+import ForgotPassword from './components/ForgotPassword.vue'
+import CreateAccount from './components/CreateAccount.vue'
 import login from './components/Auth/Login.vue';
 import register from './components/Auth/Register.vue';
 import store from './store/store';
@@ -14,6 +20,36 @@ Vue.use(Router);
 const router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/absences/:userId',
+      name: 'absences',
+      component: Absences,
+    },
+    {
+      path: '/account/:userId',
+      name: 'account',
+      component: Account,
+    },
+    {
+      path: '/clock/:userId',
+      name: 'clock',
+      component: Clock,
+    },
+    {
+      path: '/dashboard/:userId',
+      name: 'dashboard',
+      component: Dashboard,
+    },
+    {
+      path: '/createAccount/',
+      name: 'createAccount',
+      component: CreateAccount,
+    },
+    {
+      path: '/changePassword/',
+      name: 'changePassword',
+      component: ForgotPassword,
+    },
     {
       path: '/workingTimes/:userId',
       name: 'workingTimes',
