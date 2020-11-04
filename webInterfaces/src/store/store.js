@@ -31,26 +31,26 @@ const store = new Vuex.Store({
           }
         )
         .then((resp) => {
-          console.log(resp);
-          // const content = await rawResponse.json();
-          // console.log(content["message"]);
+          console.log(resp);          
+          if(resp.data.message == "user connected")
+          {            
+            axios
+              .post(
+                `${apiUrl}/check-token`,
+                {},
+                {
+                  withCredentials: true,
+                }
+              )
+              .then((userinfo) => {                
+                console.log(userinfo);
+                this.state.roleLevel = userinfo.data.roleLevel,
+                this.state.userId = userinfo.data.userId     
+              });
+          }
 
-          // if (content["message"] == "user connected") {
-          //   this.dispatch("beforeEach", {});
-          // }
+          
 
-          axios
-            .post(
-              `${apiUrl}/check-token`,
-              {},
-              {
-                withCredentials: true,
-              }
-            )
-            .then((test) => {
-              // const content = rawResponse.json();
-              console.log(test);
-            });
         });
 
       // return new Promise((resolve, reject) => {
