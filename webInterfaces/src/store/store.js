@@ -8,8 +8,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    userId: window.localStorage.getItem('user_id') || null,
-    roleLevel: 2,
+    userId: window.localStorage.getItem('userId') || null,
+    roleLevel: window.localStorage.getItem('roleLevel') || null,
     IsUserAuthenticated: false,
   },
   getters:{
@@ -17,6 +17,7 @@ const store = new Vuex.Store({
       return state.roleLevel;
     },
     getUserId: (state) => {
+      console.log(state.userId)
       return state.userId;
 
     },
@@ -26,14 +27,11 @@ const store = new Vuex.Store({
   },
   mutations: {
     setUserLogout:(state) =>{
-      console.log(state.IsUserAuthenticated)
       state.IsUserAuthenticated = false   
-      console.log(state.IsUserAuthenticated)   
     }
   },
   actions: {
     recoverUserInfo(context, info) {
-      // console.log(info);
 
       axios
         .post(
@@ -48,8 +46,7 @@ const store = new Vuex.Store({
             withCredentials: true,
           }
         )
-        .then((resp) => {
-          // console.log(resp);          
+        .then((resp) => {         
           if(resp.data.message == "user connected")
           {     
             this.state.IsUserAuthenticated = true       
