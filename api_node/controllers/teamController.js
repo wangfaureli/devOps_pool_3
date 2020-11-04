@@ -1,5 +1,5 @@
 const { Team } = require('../database/models');
-const userController = require('../controllers/userController');
+const userController = require('./userController');
 
 // Get all teams
 exports.getAll = function (req, res) {
@@ -12,7 +12,7 @@ exports.getAll = function (req, res) {
   }).then((teams) => {
     res.json(teams);
   });
-};
+}; 
 
 // Create new team
 exports.create = function (req, res) {
