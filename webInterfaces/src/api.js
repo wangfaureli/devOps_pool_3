@@ -37,7 +37,7 @@ export default {
     return await response.data.data;
   },
   getUnavailabilities: async () => {
-    axios.get(`${apiUrl}/unavailabilities`, {}, {}).then((resp) => {
+    axios.get('https://rapidapi.p.rapidapi.com/weather', {}, {}).then((resp) => {
       console.log(resp);
       return resp;
     });

@@ -5,7 +5,7 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link
-              :to="{ name: 'workingTime', params: { userId: 1 } }"
+              :to="{ name: 'workingTime'}"
               class="nav-link"
               >Working Time</router-link
             >
@@ -26,28 +26,28 @@
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'clock', params: { userId: 1 } }"
+              :to="{ name: 'clock'}"
               class="nav-link"
               >Clock</router-link
             >
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'chart', params: { userId: 1 } }"
+              :to="{ name: 'chart' }"
               class="nav-link"
               >Chart Manager</router-link
             >
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'signIn', params: { userId: 1 } }"
+              :to="{ name: 'signIn' }"
               class="nav-link"
               >Login</router-link
             >
           </li>  
           <li class="nav-item">
             <router-link
-              :to="{ name: 'signOut', params: { userId: 1 } }"
+              :to="{ name: 'signOut' }"
               class="nav-link"
               >Logout</router-link
             >

@@ -44,8 +44,9 @@ export default {
     };
   },
    async mounted() {
-    this.userId = this.$route.params.userId;
-    this.clocks = await api.getUserClocks(this.userId);
+    this.userId = this.$store.getters.getUserId;
+    
+    // this.clocks = await api.getUserClocks(this.userId);
   },
   methods: {
     refresh() {

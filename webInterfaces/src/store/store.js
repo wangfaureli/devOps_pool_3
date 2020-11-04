@@ -12,10 +12,19 @@ const store = new Vuex.Store({
     roleLevel: window.localStorage.getItem('roleLevel') || null,
     IsUserAuthenticated: false,
   },
+  getters:{
+    getRoleLevel: (state) => {
+      return state.roleLevel;
+    },
+    getUserId: (state) => {
+      return state.userId;
+
+    },
+  },
   mutations: {},
   actions: {
     recoverUserInfo(context, info) {
-      console.log(info);
+      // console.log(info);
 
       axios
         .post(
@@ -31,7 +40,7 @@ const store = new Vuex.Store({
           }
         )
         .then((resp) => {
-          console.log(resp);          
+          // console.log(resp);          
           if(resp.data.message == "user connected")
           {            
             axios
@@ -42,10 +51,10 @@ const store = new Vuex.Store({
                   withCredentials: true,
                 }
               )
-              .then((userinfo) => {                
-                console.log(userinfo);
-                this.state.roleLevel = userinfo.data.roleLevel,
-                this.state.userId = userinfo.data.userId     
+              .then((dataInfos) => {                
+                console.log(dataInfos);
+                this.state.roleLevel = dataInfos.data.roleLevel,
+                this.state.userId = dataInfos.data.userId     
               });
           }
 
