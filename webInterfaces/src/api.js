@@ -4,15 +4,10 @@ import { apiUrl } from '@/settings';
 export default {
   //WorkingTimes
   getWorkingTimes: async () => {
-    // const response = await axios.get(`${apiUrl}/workingtimes/${userId}`);
-    // return await response.data.data;
-
-    axios
-      .get(`${apiUrl}/workingtimes`, {}, { withCredentials: true })
-      .then((all) => {
-        console.log(all);
-        return all;
-      });
+    axios.get(`${apiUrl}/workingtimes`, {}, {}).then((resp) => {
+      console.log(resp);
+      return resp;
+    });
   },
   getWorkingTime: async (id, userId) => {
     const response = await axios.get(`${apiUrl}/workingtimes/${userId}/${id}`);
@@ -40,6 +35,12 @@ export default {
       },
     });
     return await response.data.data;
+  },
+  getUnavailabilities: async () => {
+    axios.get(`${apiUrl}/unavailabilities`, {}, {}).then((resp) => {
+      console.log(resp);
+      return resp;
+    });
   },
   getUserClocks: async (userId) => {
     const response = await axios.get(`${apiUrl}/clocks/${userId}`);
@@ -92,8 +93,10 @@ export default {
   signOut: async () => {
     const response = await axios.post(`${apiUrl}/logout`, {});
 
-    document.cookie = 'csrf_token=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    document.cookie = 'jwt_token=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie =
+      'csrf_token=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie =
+      'jwt_token=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     console.log(document.cookie);
 
     console.log(response.data);

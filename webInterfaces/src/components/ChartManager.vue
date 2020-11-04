@@ -52,7 +52,7 @@ import axios from "axios";
 import Raphael from 'raphael/raphael'
 global.Raphael = Raphael
 import { DonutChart, BarChart, AreaChart } from 'vue-morris'
-import api from '@/api';
+// import api from '@/api';
 
 export default {
   data() {
@@ -83,7 +83,7 @@ export default {
       { "year": "2015", "a": 29, "b": 25 },
       { "year": "2016", "a": 50, "b": 20 },
     ]
-    this.workingTimes = await api.getWorkingTimes(this.userId);
+    // this.workingTimes = await api.getWorkingTimes(this.userId);
   },
   created: function () {
     if (this.$route.params.userid != null) {

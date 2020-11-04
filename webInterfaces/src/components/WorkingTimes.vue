@@ -29,8 +29,7 @@ export default {
     };
   },
   async mounted() {
-    await this.userId;
-    this.workingTimes = await api.getWorkingTimes(this.userId);
+    this.workingTimes = await api.getWorkingTimes();
      
   },
   methods: {

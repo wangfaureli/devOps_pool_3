@@ -4,6 +4,7 @@ import WorkingTimes from './components/WorkingTimes.vue';
 import WorkingTime from './components/WorkingTime.vue';
 import ClockManager from './components/ClockManager.vue';
 import ChartManager from './components/ChartManager.vue';
+import Unavailabilities from './components/Unavailabilities.vue';
 import login from './components/Auth/Login.vue';
 import logout from './components/Auth/Logout.vue';
 import register from './components/Auth/Register.vue';
@@ -16,7 +17,12 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/workingTimes/:userId',
+      path: '/unavailabilities/',
+      name: 'Unavailabilities',
+      component: Unavailabilities,
+    },
+    {
+      path: '/workingTimes/',
       name: 'workingTimes',
       component: WorkingTimes,
     },
@@ -55,7 +61,7 @@ const router = new Router({
       name: 'register',
       component: register,
     },
-    { path: '/', redirect: '/workingTimes/1' },
+    { path: '/', redirect: '/' },
   ],
 });
 

@@ -12,9 +12,16 @@
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'workingTimes', params: { userId: 1 } }"
+              :to="{ name: 'workingTimes'}"
               class="nav-link"
               >Working Times</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'Unavailabilities'}"
+              class="nav-link"
+              >Unavailabilities</router-link
             >
           </li>
           <li class="nav-item">
