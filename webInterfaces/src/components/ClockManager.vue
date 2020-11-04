@@ -74,7 +74,8 @@ export default {
         this.clockStaus = "active";
       }
       api.CreateClock(
-        moment().format("MMMM Do YYYY, h:mm:ss a"),
+        moment().format("YYYY-MM-DD hh:mm:ss"),
+
         this.clockStaus,
         this.userId
       );

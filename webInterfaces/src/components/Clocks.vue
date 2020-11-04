@@ -15,10 +15,10 @@
             <div class="card-body">
               <div>
                 <div v-if="item.status == 1">
-                  Créer à : {{ formatDate(item.createdAt) }}
+                  Created at : {{ formatDate(item.createdAt) }}
                 </div>
                 <div v-else-if="item.status == 0">
-                  Terminé à : {{ formatDate(item.createdAt) }}
+                  Finished at : {{ formatDate(item.createdAt) }}
                 </div>
               </div>
             </div>
@@ -60,10 +60,10 @@ export default {
   },
   methods: {
     formatDate(date) {
-      const format1 = "D MMMM YYYY à h:mm:ss";
+      const format1 = "YYYY-MM-DD hh:mm:ss";
       var date1 = new Date(date);
 
-      const dateTime1 = moment(date1).locale('fr').format(format1);
+      const dateTime1 = moment(date1).format(format1);
       return dateTime1;
     },
   },
