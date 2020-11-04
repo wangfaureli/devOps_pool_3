@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express();
-const workingTime = require('../controllers/WorkingTimeController');
+const workingTime = require('../controllers/workingTimeController');
 
 /**
  * Prefix des url : 
