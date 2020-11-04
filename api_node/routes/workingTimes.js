@@ -7,6 +7,7 @@ const workingTime = require('../controllers/workingTimeController');
  * 
  * http://localhost:4000/api/workingtimes
 */
+router.get('/', workingTime.getAll);
 router.get('/:user_id', workingTime.getByUser);
 router.get('/:user_id/:workingtime_id', workingTime.getByIdAndUser);
 router.post('/:user_id', workingTime.create);

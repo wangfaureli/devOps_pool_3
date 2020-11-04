@@ -18,12 +18,13 @@ const store = new Vuex.Store({
       console.log(info);
 
       axios
-        .post(`${apiUrl}/login`,
+        .post(
+          `${apiUrl}/login`,
           {
             user: {
               username: info.username,
               password: info.password,
-            }
+            },
           },
           {
             withCredentials: true,
@@ -39,20 +40,17 @@ const store = new Vuex.Store({
           // }
 
           axios
-          .post(`${apiUrl}/check-token`,
-            {
-              user: {
-                username: info.username,
-                password: info.password,
+            .post(
+              `${apiUrl}/check-token`,
+              {},
+              {
+                withCredentials: true,
               }
-            },
-            {
-              withCredentials: true,
-            }
-          ).then((test) => {
-            // const content = rawResponse.json();
-            console.log(test);
-          });
+            )
+            .then((test) => {
+              // const content = rawResponse.json();
+              console.log(test);
+            });
         });
 
       // return new Promise((resolve, reject) => {

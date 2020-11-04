@@ -37,7 +37,14 @@
               class="nav-link"
               >Login</router-link
             >
-          </li>          
+          </li>  
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'signOut', params: { userId: 1 } }"
+              class="nav-link"
+              >Logout</router-link
+            >
+          </li>         
         </ul>
       </div>
     </nav>
