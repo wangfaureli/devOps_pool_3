@@ -15,10 +15,10 @@
             <div class="card-body">
               <div>
                 <div v-if="item.status == 1">
-                  Créer à : {{ item.createdAt }}
+                  Créer à : {{ formatDate(item.createdAt) }}
                 </div>
                 <div v-else-if="item.status == 0">
-                  Terminé à : {{ item.createdAt }}
+                  Terminé à : {{ formatDate(item.createdAt) }}
                 </div>
               </div>
             </div>
@@ -33,6 +33,7 @@
 // import api from '@/api';
 import axios from "axios";
 import { apiUrl } from "@/settings";
+import moment from "moment";
 
 export default {
   data() {
@@ -57,6 +58,14 @@ export default {
         this.clocks = resp.data;
       });
   },
-  methods: {},
+  methods: {
+    formatDate(date) {
+      const format1 = "D MMMM YYYY à h:mm:ss";
+      var date1 = new Date(date);
+
+      const dateTime1 = moment(date1).locale('fr').format(format1);
+      return dateTime1;
+    },
+  },
 };
 </script>

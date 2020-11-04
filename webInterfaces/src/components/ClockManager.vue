@@ -1,125 +1,154 @@
 <template>
-
   <div class="jumbotron jumbotron-fluid" id="main">
-    <h1> ClockManager!</h1>
-    <h6> UserID envoyé en paramètre : <b>{{ userId }}</b></h6>
+    <h1>ClockManager!</h1>
+    <h6>
+      UserID envoyé en paramètre : <b>{{ userId }}</b>
+    </h6>
 
     <div class="alert alert-danger" role="alert" v-if="clockIn">
       Attention! Le travail est en cours.
     </div>
     <div class="alert alert-success" role="alert" v-else>
       Yes! le travail est terminé.
-  </div>
-
-  
-    <div class="time"><h4>{{ time }}</h4></div>
-    <button type="button" class="btn btn-primary btn-lg">{{formatTime}}</button>
-  
-    <div class="btn-container">
-      <button type="button" class="btn btn-success" @click="Start()" v-if="!clockIn">Start</button>      
-      <button type="button" class="btn btn-danger" @click="Stop()" v-else>Stop</button>
-      <button type="button" class="btn btn-info" @click="Reset()">Reset</button>         
     </div>
 
+    <div class="time">
+      <h4>{{ time }}</h4>
+    </div>
+    <button type="button" class="btn btn-primary btn-lg">
+      {{ formatTime }}
+    </button>
+
+    <div class="btn-container">
+      <button
+        type="button"
+        class="btn btn-success"
+        @click="Start()"
+        v-if="!clockIn"
+      >
+        Start
+      </button>
+      <button type="button" class="btn btn-danger" @click="Stop()" v-else>
+        Stop
+      </button>
+      <button type="button" class="btn btn-info" @click="Reset()">Reset</button>
+    </div>
   </div>
 </template>
 
 <script>
 //import axios from "axios";
 import api from "@/api";
-import moment from 'moment'
+import moment from "moment";
+import axios from "axios";
+import { apiUrl } from "@/settings"
 
 export default {
   data() {
     return {
-      time:  moment().format('LLLL'),
+      time: moment().format("LLLL"),
       userId: "",
-      timeState: 'Stopped',
-      clockStaus: 'inactive',
-      formatTime: '00:00:00',
+      timeState: "Stopped",
+      clockStaus: "inactive",
+      formatTime: "00:00:00",
       startDateTime: "",
       clockIn: false,
-      startingTime: 0,                 
-      ticker: undefined
+      startingTime: 0,
+      ticker: undefined,
     };
   },
-   async mounted() {
+  async mounted() {
+    this.roleLevel = this.$store.getters.getRoleLevel;
     this.userId = this.$store.getters.getUserId;
-    
-    // this.clocks = await api.getUserClocks(this.userId);
   },
   methods: {
     refresh() {
-      if(this.timeState == 'Paused'|| this.timeState =='Stopped')
-      {        
+      if (this.timeState == "Paused" || this.timeState == "Stopped") {
         this.clockIn = false;
-        
-      }else if (this.timeState == 'Running'){          
-          this.clockIn = true;
+      } else if (this.timeState == "Running") {
+        this.clockIn = true;
       }
     },
     clock() {
-      if(this.clockIn)
-      {
-        this.clockStaus = 'active'
+      if (this.clockIn) {
+        this.clockStaus = "active";
       }
-        api.CreateClock(moment().format('MMMM Do YYYY, h:mm:ss a'), this.clockStaus, this.userId);
+      api.CreateClock(
+        moment().format("MMMM Do YYYY, h:mm:ss a"),
+        this.clockStaus,
+        this.userId
+      );
     },
 
     //Functions pour le chronomètre!
-    Start(){
-      if(this.timeState !== 'Running')
-      {
-        this.timeState = 'Running';
+    Start() {
+      if (this.timeState !== "Running") {
+        this.timeState = "Running";
         this.refresh();
         this.Tick();
         //on stocke les informations de clock dans la BDD
         this.clock();
+
+        axios
+          .post(
+            `${apiUrl}/clocks/${this.$store.getters.getUserId}`,
+            { withCredentials: true },
+            {}
+          )
+          .then((resp) => {
+            console.log(resp.data);
+          });
       }
-    },    
-    Stop(){
-      window.clearInterval(this.ticker);      
-      this.timeState = 'Stopped';
+    },
+    Stop() {
+      window.clearInterval(this.ticker);
+      this.timeState = "Stopped";
       this.refresh();
       this.clock();
+
+      axios
+        .post(
+          `${apiUrl}/clocks/${this.$store.getters.getUserId}`,
+          { withCredentials: true },
+          {}
+        )
+        .then((resp) => {
+          console.log(resp.data);
+        });
     },
-    Reset(){
+    Reset() {
       window.clearInterval(this.ticker);
       this.startingTime = 0;
-      this.formatTime = '00:00:00';
+      this.formatTime = "00:00:00";
       this.refresh;
-      if(this.timeState == 'Running')
-      {
+      if (this.timeState == "Running") {
         this.Stop();
       }
     },
-    Tick()
-    {
-      this.ticker = setInterval(()=>{
+    Tick() {
+      this.ticker = setInterval(() => {
         this.startingTime++;
         this.formatTime = this.Count(this.startingTime);
-      },250)      
+      }, 250);
     },
-    Count(sec)
-    {
+    Count(sec) {
       let mesuredTime = new Date(null);
       mesuredTime.setSeconds(sec);
-      let mesuredHour = mesuredTime.toISOString().substr(11,8);
+      let mesuredHour = mesuredTime.toISOString().substr(11, 8);
       return mesuredHour;
-    }
-    
+    },
   },
 };
 </script>
 <style>
-#main{
+#main {
   margin: 15px;
   text-align: center;
 }
-#date{
+#date {
   text-decoration: brown;
 }
-.btn{
+.btn {
   margin: 10px;
 }
 </style>

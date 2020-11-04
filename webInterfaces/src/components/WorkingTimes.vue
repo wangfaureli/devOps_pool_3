@@ -16,8 +16,8 @@
         <div v-for="item in workingTimes" :key="item.id"  class="card col-4 mb-4 ">
           <div>
             <div class="card-body">
-              <div><b>start time :</b> {{ item.start }}</div>
-              <div><b>end time :</b> {{ item.end }}</div>
+              <div><b>Start :</b> {{ formatDate(item.start) }}</div>
+              <div><b>End :</b> {{ formatDate(item.end) }}</div>
 
               <a
                 v-if="roleLevel == 2 || roleLevel == 1"
@@ -38,6 +38,7 @@
 // import api from '@/api';
 import axios from "axios";
 import { apiUrl } from "@/settings";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -59,6 +60,13 @@ export default {
   methods: {
     async edit(id) {
       this.$router.push(`/workingTime/${this.userId}/${id}`);
+    },
+    formatDate(date) {
+      const format1 = "D MMMM YYYY à h:mm:ss";
+      var date1 = new Date(date);
+
+      const dateTime1 = moment(date1).locale('fr').format(format1);
+      return dateTime1;
     },
   },
 };

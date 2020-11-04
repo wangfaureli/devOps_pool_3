@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class=" navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+      <div class="navbar-collapse" id="navbarNav">
+        <ul
+          class="navbar-nav"
+          v-if="this.$store.getters.getIsAuthenticated == true"
+        >
           <li class="nav-item">
-            <router-link
-              :to="{ name: 'dashboard', params: { userId: 1 } }"
-              class="nav-link"
+            <router-link :to="{ name: 'dashboard' }" class="nav-link"
               >DashBoard</router-link
             >
           </li>
@@ -18,48 +19,50 @@
             >
           </li>
           <li class="nav-item">
-            <router-link
-              :to="{ name: 'workingTimes'}"
-              class="nav-link"
+            <router-link :to="{ name: 'workingTimes' }" class="nav-link"
               >Working Times</router-link
             >
           </li>
           <li class="nav-item">
-            <router-link
-              :to="{ name: 'Unavailabilities'}"
-              class="nav-link"
+            <router-link :to="{ name: 'Unavailabilities' }" class="nav-link"
               >Unavailabilities</router-link
             >
           </li>
           <li class="nav-item">
-            <router-link
-              :to="{ name: 'clocks'}"
-              class="nav-link"
+            <router-link :to="{ name: 'clocks' }" class="nav-link"
               >Clocking</router-link
             >
           </li>
           <li class="nav-item">
-            <router-link
-              :to="{ name: 'chart' }"
-              class="nav-link"
+            <router-link :to="{ name: 'chart' }" class="nav-link"
               >Chart Manager</router-link
             >
           </li>
-          <li class="nav-item"  @click="logout()" v-if="this.$store.getters.getIsAuthenticated == true" >
-            <router-link
-              :to="{ name: 'signOut' }"
-              class="nav-link"
+          <li class="nav-item" @click="logout()">
+            <router-link :to="{ name: 'signOut' }" class="nav-link"
               >Logout</router-link
             >
-          </li> 
-          <li class="nav-item"  v-if="this.$store.getters.getIsAuthenticated == false" >
-            <router-link
-              :to="{ name: 'signIn' }"
-              class="nav-link" 
+          </li>
+          <li
+            class="nav-item"
+            v-if="this.$store.getters.getIsAuthenticated == false"
+          >
+            <router-link :to="{ name: 'signIn' }" class="nav-link"
               >Login</router-link
             >
-          </li> 
-                  
+          </li>
+        </ul>
+        <ul v-else  class="navbar-nav">
+          <li class="nav-item">
+            <router-link :to="{ name: 'dashboard' }" class="nav-link"
+              >DashBoard</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'signIn' }" class="nav-link"
+              >Login</router-link
+            >
+          </li>
         </ul>
       </div>
     </nav>
@@ -83,8 +86,8 @@ export default {
   name: "App",
   data() {
     return {
-      UserId : this.$store.getters.getUserId,
-    }
+      UserId: this.$store.getters.getUserId,
+    };
   },
   components: {
     //User,
@@ -101,10 +104,10 @@ export default {
       this.$router.push(route);
       // this.$router.go();
     },
-    logout(){
-            this.$store.commit('setUserLogout')
-            this.$router.push("/sign_in");
-        },
+    logout() {
+      this.$store.commit("setUserLogout");
+      this.$router.push("/sign_in");
+    },
   },
 };
 </script>
