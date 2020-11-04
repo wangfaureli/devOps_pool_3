@@ -10,7 +10,6 @@ COPY package*.json ./
 
 RUN npm install &&\
     # createdb -U postgres timemanager_api_dev &&\
-    npx sequelize init
     npx sequelize db:migrate &&\
     npm start &&\
     npx sequelize db:seed:all

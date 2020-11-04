@@ -1,58 +1,57 @@
-import Vue from "vue";
-import Vuex from "vuex";
-//import axios from "axios";
-import { apiUrl } from "../settings.js";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
+import { apiUrl } from '../settings.js';
 // import { reject } from 'core-js/fn/promise';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    userId: window.localStorage.getItem("user_id") || null,
-    roleLevel: window.localStorage.getItem("roleLevel") || null,
+    userId: window.localStorage.getItem('user_id') || null,
+    roleLevel: window.localStorage.getItem('roleLevel') || null,
     IsUserAuthenticated: false,
   },
   mutations: {},
   actions: {
     recoverUserInfo(context, info) {
       console.log(info);
-      let data = JSON.stringify({
-        user: {
-          username: info.username,
-          password: info.password,
-        },
-      });
 
-        fetch(`${apiUrl}/login`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:4000",
+      axios
+        .post(`${apiUrl}/login`,
+          {
+            user: {
+              username: info.username,
+              password: info.password,
+            }
           },
-          //credentials: 'include',
-          body: data,
-        }).then((resp) => {
-          console.log(resp)
+          {
+            withCredentials: true,
+          }
+        )
+        .then((resp) => {
+          console.log(resp);
           // const content = await rawResponse.json();
           // console.log(content["message"]);
-  
+
           // if (content["message"] == "user connected") {
           //   this.dispatch("beforeEach", {});
           // }
 
-
-          fetch(`${apiUrl}/check-token`, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+          axios
+          .post(`${apiUrl}/check-token`,
+            {
+              user: {
+                username: info.username,
+                password: info.password,
+              }
             },
-            body: '',
-          }).then((test) => {
-  
+            {
+              withCredentials: true,
+            }
+          ).then((test) => {
             // const content = rawResponse.json();
-            console.log(test);      
+            console.log(test);
           });
         });
 
@@ -88,12 +87,9 @@ const store = new Vuex.Store({
     //     }).then((test) => {
 
     //       // const content = rawResponse.json();
-    //       console.log(test);      
+    //       console.log(test);
     //     });
 
-        
-      
-      
     // },
   },
 });

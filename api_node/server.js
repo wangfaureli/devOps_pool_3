@@ -1,6 +1,6 @@
 const express = require('express');
 const coockieParser = require('cookie-parser');
-const listEndpoints = require('express-list-endpoints')
+const listEndpoints = require('express-list-endpoints');
 const cors = require('cors');
 
 const usersRoutes = require('./routes/users.js');
@@ -12,16 +12,14 @@ const globalRoutes = require('./routes/globals.js');
 
 const router = express();
 const PORT = 4000;
-// const PORT = 5432;
 
-router.use(cors({
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204,
-   "credentials": true
-}))
-router.use(coockieParser())
+router.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+router.use(coockieParser());
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
@@ -43,4 +41,4 @@ router.get('/', (req, res) => {
   res.send(listEndpoints(router));
 });
 
-module.exports = router
+module.exports = router;

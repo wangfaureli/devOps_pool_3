@@ -55,7 +55,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const getCsrfToken = async () => {
-    const { data } = await axios.get(`${apiUrl}/csrf-token`);
+    const { data } = await axios.get(`${apiUrl}/check-token`);
     axios.defaults.headers.post['c-xsrf-token'] = data.csrfToken;
    };
   getCsrfToken (); 
