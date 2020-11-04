@@ -5,7 +5,7 @@
     <div>
       <button
         class="btn btn-info"
-        @click="$router.push(`/workingTime/${userId}`)"
+        @click="$router.push(`/workingtimes/add`)"
       >
         Create
       </button>

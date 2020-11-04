@@ -5,7 +5,6 @@
     <div>
       <button
         class="btn btn-info"
-        @click="$router.push(`/workingTimes/${userId}`)"
       >
         Create
       </button>
@@ -21,8 +20,8 @@
           <div>
             <div class="card-body">
               <div><b>User :</b> {{ item.user.firstname }} {{ item.user.lastname }}</div>
-              <div><b>Start time :</b> {{ item.start }}</div>
-              <div><b>end time :</b> {{ item.end }}</div>
+              <div><b>From :</b> {{ formatDate(item.start) }}</div>
+              <div><b>To :</b> {{ formatDate(item.end) }}</div>
               <div><b>Reason :</b> {{ item.reason }}</div>
               <div>
                 <b>Accepted :</b>
@@ -50,6 +49,7 @@
 // import api from '@/api';
 import axios from "axios";
 import { apiUrl } from "@/settings";
+import moment from "moment";
 
 export default {
   data() {
@@ -67,6 +67,14 @@ export default {
         this.unavailabilities = resp.data;
       });
   },
-  methods: {},
+  methods: {
+        formatDate(date) {
+      const format1 = "D MMMM YYYY à h:mm:ss";
+      var date1 = new Date(date);
+
+      const dateTime1 = moment(date1).locale('fr').format(format1);
+      return dateTime1;
+    },
+  },
 };
 </script>
