@@ -9,10 +9,11 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install &&\
-    createdb -U postgres timemanager_api_dev &&\
-    sequelize db:migrate &&\
+    # createdb -U postgres timemanager_api_dev &&\
+    npx sequelize init
+    npx sequelize db:migrate &&\
     npm start &&\
-    sequelize db:seed:all
+    npx sequelize db:seed:all
 # If you are building your code for production
 # RUN npm ci --only=production
 
