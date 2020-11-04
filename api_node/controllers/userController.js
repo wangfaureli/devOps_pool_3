@@ -7,40 +7,67 @@ const jwt = require('../utils/jwt.utils');
 // Get one user by user_id
 exports.getById = function (req, res) {
   const { user_id } = req.params;
+  const { roleLevel, userId } = userController.getUserConnected(req, res);
 
-  User.findByPk(user_id, {
-    include: [
-      {
-        model: Team,
-        as: 'teams',
+  if (roleLevel == 1 || roleLevel == 2) {
+    User.findByPk(user_id, {
+      include: [
+        {
+          model: Team,
+          as: 'teams',
+        },
+        {
+          model: Role,
+          as: 'role',
+        },
+      ],
+    }).then((user) => {
+      res.json(user);
+    });
+  } else {
+    User.findOne({
+      include: [
+        {
+          model: Team,
+          as: 'teams',
+        },
+        {
+          model: Role,
+          as: 'role',
+        },
+      ],
+      where: {
+        id: userId,
       },
-      {
-        model: Role,
-        as: 'role',
-      },
-    ],
-  }).then((user) => {
-    res.json(user);
-  });
+    }).then((user) => {
+      res.json(user);
+    });
+  }
 };
 
 // Add team in user
 exports.updateTeams = function (req, res) {
   const { user_id } = req.params;
   const { teams } = req.body;
+  const { roleLevel, userId } = userController.getUserConnected(req, res);
 
-  if (teams && teams.length > 0) {
-    const userFound = User.findByPk(user_id, {
-      include: [
-        {
-          model: Team,
-          as: 'teams',
-        },
-      ],
-    }).then((user) => {
-      user.setTeams(teams);
-      res.json(user.teams);
-    });
+  if (roleLevel == 1 || roleLevel == 2) {
+    if (teams && teams.length > 0) {
+      const userFound = User.findByPk(user_id, {
+        include: [
+          {
+            model: Team,
+            as: 'teams',
+          },
+        ],
+      }).then((user) => {
+        user.setTeams(teams).then((userteam) => {
+          res.json(userteam);
+        });
+      });
+    }
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
   }
 
   // let userTeams = [];
@@ -91,10 +118,9 @@ exports.update = function (req, res) {
   const { user_id } = req.params;
   const userValues = req.body.user;
 
-  bcrypt.hash(userValues.password, 6, (err, passwordHashed) => {
-    userValues.password = passwordHashed;
-    console.log(userValues.password);
+  const { roleLevel, userId } = userController.getUserConnected(req, res);
 
+  if (roleLevel == 1 || roleLevel == 3 || user_id == userId) {
     User.update(userValues, {
       where: {
         id: user_id,
@@ -102,7 +128,9 @@ exports.update = function (req, res) {
     }).then((user) => {
       res.json({ message: 'User edited' });
     });
-  });
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
+  }
 };
 
 // Authenticate user
@@ -166,44 +194,50 @@ exports.create = function (req, res) {
   const birthday = req.body.user.birthday;
   const roleId = req.body.user.roleId;
 
-  // check empty field
-  if (
-    username == null ||
-    email == null ||
-    password == null ||
-    firstname == null ||
-    lastname == null ||
-    roleId == null
-  ) {
-    res.status(400).json({ error: 'missing fields' });
-  }
+  const { roleLevel } = userController.getUserConnected(req, res);
 
-  // TODO : verify string min length, email regex, password, etc
-
-  const { Op } = require('sequelize');
-
-  User.findOne({
-    attributes: ['email'],
-    where: {
-      [Op.or]: [{ email: email }, { username: username }],
-    },
-  }).then((userExist) => {
-    if (!userExist) {
-      const newUser = User.create({
-        username: username,
-        password: password,
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        birthday: birthday,
-        roleId: roleId,
-      }).then((user) => {
-        res.status(201).json({ user });
-      });
-    } else {
-      res.status(409).json({ error: 'User already exist in db' });
+  if (roleLevel == 1 || roleLevel == 2) {
+    // check empty field
+    if (
+      username == null ||
+      email == null ||
+      password == null ||
+      firstname == null ||
+      lastname == null ||
+      roleId == null
+    ) {
+      res.status(400).json({ error: 'missing fields' });
     }
-  });
+
+    // TODO : verify string min length, email regex, password, etc
+
+    const { Op } = require('sequelize');
+
+    User.findOne({
+      attributes: ['email'],
+      where: {
+        [Op.or]: [{ email: email }, { username: username }],
+      },
+    }).then((userExist) => {
+      if (!userExist) {
+        const newUser = User.create({
+          username: username,
+          password: password,
+          email: email,
+          firstname: firstname,
+          lastname: lastname,
+          birthday: birthday,
+          roleId: roleId,
+        }).then((user) => {
+          res.status(201).json({ user });
+        });
+      } else {
+        res.status(409).json({ error: 'User already exist in db' });
+      }
+    });
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
+  }
 };
 
 // Log out user
@@ -217,48 +251,59 @@ exports.logout = function (req, res) {
 exports.delete = function (req, res) {
   const userId = req.params.user_id;
 
-  const deleteUser = User.destroy({
-    where: {
-      id: userId,
-    },
-  }).then((user) => {
-    res.json({ message: 'user deleted' });
-  });
+  const { roleLevel } = userController.getUserConnected(req, res);
+
+  if (roleLevel == 1) {
+    const deleteUser = User.destroy({
+      where: {
+        id: userId,
+      },
+    }).then((user) => {
+      res.json({ message: 'user deleted' });
+    });
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
+  }
 };
 
 // Get all users
 exports.getAll = function (req, res) {
   const username = req.query.username;
   const email = req.query.email;
+  const { roleLevel } = userController.getUserConnected(req, res);
 
-  if (username) {
-    User.findOne({
-      where: {
-        username: username,
-      },
-    }).then((user) => {
-      res.json(user);
-    });
-  } else if (email) {
-    User.findOne({
-      where: {
-        email: email,
-      },
-    }).then((user) => {
-      res.json(user);
-    });
-  } else {
-    // return all users
-    User.findAll({
-      include: [
-        {
-          model: Team,
-          as: 'teams',
+  if (roleLevel == 1 || roleLevel == 2) {
+    if (username) {
+      User.findOne({
+        where: {
+          username: username,
         },
-      ],
-    }).then((users) => {
-      res.json(users);
-    });
+      }).then((user) => {
+        res.json(user);
+      });
+    } else if (email) {
+      User.findOne({
+        where: {
+          email: email,
+        },
+      }).then((user) => {
+        res.json(user);
+      });
+    } else {
+      // return all users
+      User.findAll({
+        include: [
+          {
+            model: Team,
+            as: 'teams',
+          },
+        ],
+      }).then((users) => {
+        res.json(users);
+      });
+    }
+  } else {
+    res.json({ message: "you don't have the rights to do this" });
   }
 };
 

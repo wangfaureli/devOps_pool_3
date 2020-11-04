@@ -20,6 +20,7 @@ exports.getByUser = function (req, res) {
   }).then((clocks) => {
     res.json(clocks);
   });
+  
 };
 
 // Get last user clock

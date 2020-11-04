@@ -6,6 +6,17 @@ module.exports = {
       'Users',
       [
         {
+          username: 'admin',
+          password: '$2a$06$IMYYTt4GQOtcxdJyACik1.qskLjYU0GQRcYpGdYfqxEIDqugb4Nry',
+          firstname: 'admin',
+          lastname: 'admin',
+          email: 'admin@admin.com',
+          birthday: '2020-01-01',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          roleId: 1
+        },
+        {
           username: 'Rompiot',
           password: '$2a$06$IMYYTt4GQOtcxdJyACik1.qskLjYU0GQRcYpGdYfqxEIDqugb4Nry',
           firstname: 'Romain',
@@ -14,7 +25,7 @@ module.exports = {
           birthday: '1991-12-10',
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 1
+          roleId: 2
         },
         {
           username: 'Litchie',
@@ -58,7 +69,7 @@ module.exports = {
           birthday: '1965-08-24',
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 4
+          roleId: 3
         },
       ],
       {}

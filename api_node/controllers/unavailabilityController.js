@@ -93,11 +93,25 @@ exports.update = function (req, res) {
   const { unavailability_id } = req.params;
   const unavailabilityValues = req.body.unavailability;
 
-  Unavailability.update(unavailabilityValues, {
-    where: {
-      id: unavailability_id,
-    },
-  }).then((unavailability) => {
-    res.json({ message: 'Unavailability edited' });
-  });
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
+
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    Unavailability.update(unavailabilityValues, {
+      where: {
+        id: unavailability_id,
+      },
+    }).then((unavailability) => {
+      res.json({ message: 'Unavailability edited' });
+    });
+  } else {
+    Unavailability.update(unavailabilityValues, {
+      where: {
+        id: unavailability_id,
+        userId: userId
+      },
+    }).then((unavailability) => {
+      res.json({ message: 'Unavailability edited' });
+    });
+  }
 };
