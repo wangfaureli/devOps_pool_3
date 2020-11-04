@@ -9,6 +9,7 @@ import Unavailabilities from './components/Unavailabilities.vue';
 import login from './components/Auth/Login.vue';
 import logout from './components/Auth/Logout.vue';
 import register from './components/Auth/Register.vue';
+import dashBoard from './components/DashBoard.vue';
 // import store from './store/store';
 // import axios from 'axios';
 // import { apiUrl } from '@/settings';
@@ -67,7 +68,12 @@ const router = new Router({
       name: 'register',
       component: register,
     },
-    { path: '/', redirect: '/clocks' },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: dashBoard,
+    },
+    { path: '/', redirect: '/dashboard' },
   ],
 });
 

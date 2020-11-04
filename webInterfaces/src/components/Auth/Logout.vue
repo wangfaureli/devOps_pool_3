@@ -7,7 +7,6 @@ import api from "@/api";
 
 export default {
   name: "signOut",
-  data() {},
   async mounted() {
     this.workingTimes = await api.signOut();
   },
