@@ -3,11 +3,13 @@ import { apiUrl } from '@/settings';
 
 export default {
   //WorkingTimes
-  getWorkingTimes: async () => {
-    axios.get(`${apiUrl}/workingtimes`, {}, {}).then((resp) => {
-      console.log(resp);
-      return resp;
-    });
+  getWorkingTimes: () => {
+    axios
+      .get(`${apiUrl}/workingtimes`, { withCredentials: true }, {})
+      .then((resp) => {
+        console.log(resp.data);
+        return resp.data;
+      });
   },
   getWorkingTime: async (id, userId) => {
     const response = await axios.get(`${apiUrl}/workingtimes/${userId}/${id}`);
@@ -37,10 +39,11 @@ export default {
     return await response.data.data;
   },
   getUnavailabilities: async () => {
-    axios.get('https://rapidapi.p.rapidapi.com/weather', {}, {}).then((resp) => {
-      console.log(resp);
-      return resp;
-    });
+    axios
+      .get(`${apiUrl}/unavailabilities`, { withCredentials: true }, {})
+      .then((resp) => {
+        return resp;
+      });
   },
   getUserClocks: async (userId) => {
     const response = await axios.get(`${apiUrl}/clocks/${userId}`);
