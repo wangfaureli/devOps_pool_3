@@ -1,16 +1,16 @@
 
 language: node_js
-node_js: '12.2.0'
+node_js: '14.2.0'
 
 cache:
   directories:
     - node_modules
 
-before_script: cd webInterfaces
+before_script: cd api_node
 
 script:
   - npm install
-  - npm run serve
+  - npm test
 
   # deploy:
   #   skip_cleanup: true
