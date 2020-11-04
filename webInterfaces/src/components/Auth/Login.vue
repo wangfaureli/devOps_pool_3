@@ -62,18 +62,27 @@ export default {
   methods: {
     signIn() {
       this.loading = true;
-      const username = this.username;      
-
-      bcrypt.hash(this.password, 6).then((hash) => {
-        this.$store
-          .dispatch("recoverToken", {
+      const username = this.username;   
+      
+      this.$store
+          .dispatch("recoverUserInfo", {
             username: username,
-            password: hash,
+            password: this.password,
           })
-          .then(() => {
-            this.$router.push("/");            
+          .then(() => {            
+            //this.$router.push("/");            
           });
-      });
+
+      // bcrypt.hash(this.password, 6).then((hash) => {
+      //   this.$store
+      //     .dispatch("recoverUserInfo", {
+      //       username: username,
+      //       password: hash,
+      //     })
+      //     .then(() => {
+      //       this.$router.push("/");            
+      //     });
+      // });
     },
   },
 };

@@ -157,7 +157,10 @@ exports.login = function (req, res) {
   })
     .then((userFound) => {
       if (userFound) {
+        console.log(password);
+        console.log(userFound.password);
         bcrypt.compare(password, userFound.password, (errBcrypt, resBcrypt) => {
+          console.log(resBcrypt);
           if (resBcrypt) {
             const jwtToken = jwt.generateJwtToken(userFound);
             const csrfToken = jwt.generateCsrfToken();
