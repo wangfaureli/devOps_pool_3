@@ -25,8 +25,9 @@ services:
       - 5432:5432
    
   api:
+    container_name: api
     build:
-      context: ./api
+      context: ./api_node
       dockerfile: Dockerfile
     depends_on:
       - db

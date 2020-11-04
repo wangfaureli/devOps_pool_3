@@ -147,7 +147,6 @@ exports.login = function (req, res) {
   User.findOne({
     where: {
       username: username,
-      password: password,
     },
     include: [
       {
@@ -158,29 +157,35 @@ exports.login = function (req, res) {
   })
     .then((userFound) => {
       if (userFound) {
-        const jwtToken = jwt.generateJwtToken(userFound);
-        const csrfToken = jwt.generateCsrfToken();
+        bcrypt.compare(password, userFound.password, (errBcrypt, resBcrypt) => {
+          if (resBcrypt) {
+            const jwtToken = jwt.generateJwtToken(userFound);
+            const csrfToken = jwt.generateCsrfToken();
 
-        // Creates a cookie which expires after 30 day
-        const oneMonth = 24 * 60 * 60 * 30;
+            // Creates a cookie which expires after 30 day
+            const oneMonth = 24 * 60 * 60 * 30;
 
-        res
-          .cookie('jwt_token', jwtToken, {
-            maxAge: oneMonth,
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production' ? true : false,
-          })
-          .cookie('csrf_token', csrfToken, {
-            maxAge: oneMonth,
-            secure: process.env.NODE_ENV === 'production' ? true : false,
-          })
-          .json({ message: 'user connected' });
+            res
+              .cookie('jwt_token', jwtToken, {
+                maxAge: oneMonth,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+              })
+              .cookie('csrf_token', csrfToken, {
+                maxAge: oneMonth,
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+              })
+              .json({ message: 'user connected' });
+          } else {
+            res.status(500).json({ errBcrypt });
+          }
+        });
       } else {
-        res.status(500).json({ error: 'fail connection' });
+        res.status(500).json({ error: 'Fail connection' });
       }
     })
     .catch((err) => {
-      res.status(500).json({ error: 'unable to verify user' });
+      res.status(500).json({ error: 'Password error' });
     });
 };
 

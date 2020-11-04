@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:14
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -8,7 +8,11 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+RUN npm install &&\
+    createdb -U postgres timemanager_api_dev &&\
+    sequelize db:migrate &&\
+    npm start &&\
+    sequelize db:seed:all
 # If you are building your code for production
 # RUN npm ci --only=production
 
@@ -16,4 +20,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 4000
-CMD [ "npm", "start" ]
+# CMD [ "npm", "start" ]
