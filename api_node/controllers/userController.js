@@ -344,4 +344,4 @@ exports.getUserConnected = function (req, res) {
 exports.checkUserData = function (req, res) {
   const dataToken = userController.decryptToken(req, res);
   res.json({ userId: dataToken.userId, roleLevel: dataToken.roleLevel });
-};
+}; 

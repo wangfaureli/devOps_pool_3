@@ -5,6 +5,7 @@ import WorkingTime from './components/WorkingTime.vue';
 import ClockManager from './components/ClockManager.vue';
 import ChartManager from './components/ChartManager.vue';
 import login from './components/Auth/Login.vue';
+import register from './components/Auth/Register.vue';
 import store from './store/store';
 import axios from "axios";
 import { apiUrl } from "@/settings";
@@ -41,7 +42,12 @@ const router = new Router({
     {
       path: '/sign_in',
       name: 'signIn',
-      component: login,
+      component: login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
     },
     { path: '/', redirect: '/workingTimes/1' },
   ],

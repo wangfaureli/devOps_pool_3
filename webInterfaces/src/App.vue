@@ -37,7 +37,7 @@
               class="nav-link"
               >Login</router-link
             >
-          </li>
+          </li>          
         </ul>
       </div>
     </nav>

@@ -24,7 +24,7 @@ const store = new Vuex.Store({
         }
       });
 
-      (async () => {
+      async () => {
         const rawResponse = await fetch(`${apiUrl}/login`, {
           method: 'POST',
           headers: {
@@ -36,7 +36,7 @@ const store = new Vuex.Store({
         const content = await rawResponse.json();
       
         console.log(content);
-      })()
+      }
 
       // return new Promise((resolve, reject) => {
       //   axios
