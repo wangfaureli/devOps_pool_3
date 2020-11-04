@@ -1,4 +1,4 @@
-const { Unavailability } = require('../database/models');
+const { Unavailability, User } = require('../database/models');
 const userController = require('../controllers/userController');
 
 // Get all unavailability
@@ -11,12 +11,19 @@ exports.getAll = function (req, res) {
       where: {
         userId: userId,
       },
+      include: [{ model: User, as: 'User' }],
     }).then((unavailability) => {
       res.json(unavailability);
     });
   } else {
     Unavailability.findAll({
-      where: {},
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ["username", "email", "firstname", "lastname"]
+        },
+      ]
     }).then((unavailability) => {
       res.json(unavailability);
     });
@@ -108,7 +115,7 @@ exports.update = function (req, res) {
     Unavailability.update(unavailabilityValues, {
       where: {
         id: unavailability_id,
-        userId: userId
+        userId: userId,
       },
     }).then((unavailability) => {
       res.json({ message: 'Unavailability edited' });

@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import WorkingTimes from './components/WorkingTimes.vue';
 import WorkingTime from './components/WorkingTime.vue';
 import ClockManager from './components/ClockManager.vue';
+import Clocks from './components/Clocks.vue';
 import ChartManager from './components/ChartManager.vue';
 import Unavailabilities from './components/Unavailabilities.vue';
 import login from './components/Auth/Login.vue';
@@ -37,9 +38,14 @@ const router = new Router({
       component: WorkingTime,
     },
     {
-      path: '/clocks',
-      name: 'clock',
+      path: '/clock-manager',
+      name: 'clockManager',
       component: ClockManager,
+    },
+    {
+      path: '/clocks',
+      name: 'clocks',
+      component: Clocks,
     },
     {
       path: '/chartManager/:userId',

@@ -5,7 +5,7 @@
     <div>
       <button
         class="btn btn-info"
-        @click="$router.push(`/workingTime/${userId}`)"
+        @click="$router.push(`/workingTimes/${userId}`)"
       >
         Create
       </button>
@@ -20,7 +20,7 @@
         >
           <div>
             <div class="card-body">
-              <div><b>User :</b> {{ item.userId }}</div>
+              <div><b>User :</b> {{ item.user.firstname }} {{ item.user.lastname }}</div>
               <div><b>Start time :</b> {{ item.start }}</div>
               <div><b>end time :</b> {{ item.end }}</div>
               <div><b>Reason :</b> {{ item.reason }}</div>

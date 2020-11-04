@@ -26,9 +26,9 @@
           </li>
           <li class="nav-item">
             <router-link
-              :to="{ name: 'clock'}"
+              :to="{ name: 'clocks'}"
               class="nav-link"
-              >Clock</router-link
+              >Clocking</router-link
             >
           </li>
           <li class="nav-item">
