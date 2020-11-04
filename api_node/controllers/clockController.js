@@ -25,6 +25,7 @@ exports.getByUser = function (req, res) {
 
 // Get last user clock
 getLastUserClock = (user_id) => {
+  console.log(user_id);
   const lastClock = Clock.findAll({
     limit: 1,
     where: {
@@ -38,10 +39,10 @@ getLastUserClock = (user_id) => {
 
 // Clock In & clock out
 exports.addForUser = function (req, res) {
-  const { user_id } = userController.getUserConnected(req, res);
+  const { userId } = userController.getUserConnected(req, res);
 
   // check last clock
-  this.getLastUserClock(user_id).then((clocks) => {
+  this.getLastUserClock(userId).then((clocks) => {
     if (clocks.length > 0) {
       lastClock = clocks[0].dataValues.status;
     } else {
@@ -60,7 +61,7 @@ exports.addForUser = function (req, res) {
       newClockValue = 0;
     }
 
-    const newClock = Clock.create({ status: newClockValue, userId: user_id });
+    const newClock = Clock.create({ status: newClockValue, userId: userId });
     res.json({ message: 'Inserted' });
   });
 };

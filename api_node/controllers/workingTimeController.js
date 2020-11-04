@@ -1,6 +1,55 @@
 const { WorkingTime } = require('../database/models');
 const userController = require('../controllers/userController');
 
+// Get all working time by user and date
+exports.getAll = function (req, res) {
+  let dateStart = req.query.start;
+  let dateEnd = req.query.end;
+  // let dateStart = req.body.workingtime.start;
+  // let dateEnd = req.body.workingtime.end;
+  const { userId, roleLevel } = userController.getUserConnected(req, res);
+
+  if (!dateStart) {
+    dateStart = '1900-01-01 00:00:00';
+  }
+  if (!dateEnd) {
+    dateEnd = '2100-12-30 23:59:59';
+  }
+  const { Op } = require('sequelize');
+
+  // check if is employee
+  if (roleLevel == 3) {
+    WorkingTime.findAll({
+      where: {
+        userId: userId,
+        start: {
+          [Op.gte]: dateStart,
+        },
+        end: {
+          [Op.lte]: dateEnd,
+        },
+      },
+      order: [['start', 'ASC']],
+    }).then((workingTimes) => {
+      res.json(workingTimes);
+    });
+  } else {
+    WorkingTime.findAll({
+      where: {
+        start: {
+          [Op.gte]: dateStart,
+        },
+        end: {
+          [Op.lte]: dateEnd,
+        },
+      },
+      order: [['start', 'ASC']],
+    }).then((workingTimes) => {
+      res.json(workingTimes);
+    });
+  }
+};
+
 // Create working time
 exports.create = function (req, res) {
   const start = req.body.workingtime.start;
