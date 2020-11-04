@@ -5,7 +5,14 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <router-link
-              :to="{ name: 'workingTime'}"
+              :to="{ name: 'dashboard', params: { userId: 1 } }"
+              class="nav-link"
+              >DashBoard</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              :to="{ name: 'workingTime', params: { userId: 1 } }"
               class="nav-link"
               >Working Time</router-link
             >
@@ -38,20 +45,21 @@
               >Chart Manager</router-link
             >
           </li>
-          <li class="nav-item">
-            <router-link
-              :to="{ name: 'signIn' }"
-              class="nav-link"
-              >Login</router-link
-            >
-          </li>  
-          <li class="nav-item">
+          <li class="nav-item"  @click="logout()" v-if="this.$store.getters.getIsAuthenticated == true" >
             <router-link
               :to="{ name: 'signOut' }"
               class="nav-link"
               >Logout</router-link
             >
-          </li>         
+          </li> 
+          <li class="nav-item"  v-if="this.$store.getters.getIsAuthenticated == false" >
+            <router-link
+              :to="{ name: 'signIn' }"
+              class="nav-link" 
+              >Login</router-link
+            >
+          </li> 
+                  
         </ul>
       </div>
     </nav>
@@ -73,6 +81,11 @@
 //import User from "./components/User.vue";
 export default {
   name: "App",
+  data() {
+    return {
+      UserId : this.$store.getters.getUserId,
+    }
+  },
   components: {
     //User,
   },
@@ -88,6 +101,10 @@ export default {
       this.$router.push(route);
       // this.$router.go();
     },
+    logout(){
+            this.$store.commit('setUserLogout')
+            this.$router.push("/sign_in");
+        },
   },
 };
 </script>

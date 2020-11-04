@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       workingTimes: []
+      
     };
   },
   async mounted() {

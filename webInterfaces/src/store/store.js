@@ -9,7 +9,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     userId: window.localStorage.getItem('user_id') || null,
-    roleLevel: window.localStorage.getItem('roleLevel') || null,
+    roleLevel: 2,
     IsUserAuthenticated: false,
   },
   getters:{
@@ -20,8 +20,17 @@ const store = new Vuex.Store({
       return state.userId;
 
     },
+    getIsAuthenticated: (state) =>{
+      return state.IsUserAuthenticated
+    }
   },
-  mutations: {},
+  mutations: {
+    setUserLogout:(state) =>{
+      console.log(state.IsUserAuthenticated)
+      state.IsUserAuthenticated = false   
+      console.log(state.IsUserAuthenticated)   
+    }
+  },
   actions: {
     recoverUserInfo(context, info) {
       // console.log(info);
@@ -42,7 +51,8 @@ const store = new Vuex.Store({
         .then((resp) => {
           // console.log(resp);          
           if(resp.data.message == "user connected")
-          {            
+          {     
+            this.state.IsUserAuthenticated = true       
             axios
               .post(
                 `${apiUrl}/check-token`,
@@ -54,11 +64,10 @@ const store = new Vuex.Store({
               .then((dataInfos) => {                
                 console.log(dataInfos);
                 this.state.roleLevel = dataInfos.data.roleLevel,
-                this.state.userId = dataInfos.data.userId     
+                this.state.userId = dataInfos.data.userId   
+                
               });
-          }
-
-          
+          }         
 
         });
 

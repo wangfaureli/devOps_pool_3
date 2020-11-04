@@ -70,7 +70,7 @@ export default {
             password: this.password,
           })
           .then(() => {            
-            //this.$router.push("/");            
+            this.$router.push("/");            
           });
 
       // bcrypt.hash(this.password, 6).then((hash) => {
