@@ -11,6 +11,10 @@ const store = new Vuex.Store({
     userId: window.localStorage.getItem('userId') || null,
     roleLevel: window.localStorage.getItem('roleLevel') || null,
     IsUserAuthenticated: false,
+    clockState: "Stopped",
+    clockTime: "00:00:00",
+    ClockedIn : false,
+    ClockstartingTime : 0,
   },
   getters:{
     getRoleLevel: (state) => {
@@ -23,12 +27,36 @@ const store = new Vuex.Store({
     },
     getIsAuthenticated: (state) =>{
       return state.IsUserAuthenticated
+    },
+    getClockState: (state) =>{
+      return state.clockState
+    },
+    getClockTime: (state) =>{
+      return state.clockTime
+    },
+    getClockedIn: (state) =>{
+      return state.ClockedIn
+    },
+    getClockStartingTime: (state) =>{
+      return state.ClockstartingTime
     }
   },
   mutations: {
     setUserLogout:(state) =>{
       state.IsUserAuthenticated = false   
-    }
+    },
+    setClockTime: (state, value) =>{      
+      state.clockTime = value
+    },
+    setClockState: (state, value) =>{
+      state.clockState = value
+    },
+    setClockedIn: (state, value) =>{      
+      state.ClockedIn = value      
+    },
+    setClockStartingTime: (state, value) =>{      
+      state.ClockstartingTime = value      
+    },
   },
   actions: {
     recoverUserInfo(context, info) {

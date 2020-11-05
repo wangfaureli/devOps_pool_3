@@ -4,7 +4,7 @@
     <h6>
     </h6>
 
-    <div class="alert alert-danger" role="alert" v-if="clockIn">
+    <div class="alert alert-danger" role="alert" v-if="this.$store.getters.getClockedIn">
       Work is in progress
     </div>
     <div class="alert alert-success" role="alert" v-else>
@@ -23,7 +23,7 @@
         type="button"
         class="btn btn-success"
         @click="Start()"
-        v-if="!clockIn"
+        v-if="clockIn == false"
       >
         Start
       </button>
@@ -46,25 +46,33 @@ export default {
     return {
       time: moment().format("LLLL"),
       userId: "",
-      timeState: "Stopped",
+      timeState: this.$store.getters.getClockState,
       clockStaus: "inactive",
-      formatTime: "00:00:00",
+      formatTime: this.$store.getters.getClockTime,
       startDateTime: "",
-      clockIn: false,
-      startingTime: 0,
+      clockIn: this.$store.getters.getClockedIn,
+      startingTime: this.$store.getters.getClockStartingTime,
       ticker: undefined,
     };
   },
   async mounted() {
     this.roleLevel = this.$store.getters.getRoleLevel;
     this.userId = this.$store.getters.getUserId;
+    if(this.clockIn == true)
+      {
+        this.startingTime = this.$store.getters.getClockStartingTime
+        this.Tick()
+      }
   },
   methods: {
     refresh() {
-      if (this.timeState == "Paused" || this.timeState == "Stopped") {
+      if (this.timeState == "Stopped") {
         this.clockIn = false;
+        this.$store.commit('setClockedIn', this.clockIn)
+        
       } else if (this.timeState == "Running") {
         this.clockIn = true;
+        this.$store.commit('setClockedIn', this.clockIn)
       }
     },
     clock() {
@@ -80,13 +88,15 @@ export default {
     },
 
     //Functions pour le chronomètre!
-    Start() {
+    Start() {      
       if (this.timeState !== "Running") {
+        //this.Reset();
         this.timeState = "Running";
+        this.$store.commit('setClockState', this.timeState)
         this.refresh();
         this.Tick();
         //on stocke les informations de clock dans la BDD
-        this.clock();
+        //this.clock();
 
          axios
         .post(
@@ -105,8 +115,11 @@ export default {
     Stop() {
       window.clearInterval(this.ticker);
       this.timeState = "Stopped";
+      this.$store.commit('setClockState', this.timeState)
+      console.log("stopped time :" + this.formatTime)
+      this.$store.commit('setClockTime', this.formatTime)
       this.refresh();
-      this.clock();
+      //this.clock();
 
       axios
         .post(
@@ -125,24 +138,34 @@ export default {
       window.clearInterval(this.ticker);
       this.startingTime = 0;
       this.formatTime = "00:00:00";
-      this.refresh;
-      if (this.timeState == "Running") {
-        this.Stop();
-      }
+      this.refresh;      
     },
     Tick() {
       this.ticker = setInterval(() => {
         this.startingTime++;
         this.formatTime = this.Count(this.startingTime);
-      }, 250);
+      }, 650);
+      console.log("here :" + this.startingTime)
+      this.$store.commit('setClockStartingTime', this.startingTime)
+      this.$store.commit('setClockTime', this.formatTime)
+      
     },
     Count(sec) {
       let mesuredTime = new Date(null);
       mesuredTime.setSeconds(sec);
-      let mesuredHour = mesuredTime.toISOString().substr(11, 8);
+      let mesuredHour = mesuredTime.toISOString().substr(11, 8);      
       return mesuredHour;
     },
   },
+  beforeMount(){
+      console.log("mount starts")
+      this.timeState = this.$store.getters.getClockState,      
+      this.formatTime = this.$store.getters.getClockTime,      
+      this.clockIn = this.$store.getters.getClockedIn,
+      this.startingTime = this.$store.getters.getClockStartingTime
+      console.log(this.startingTime)
+      
+ },
 };
 </script>
 <style>
