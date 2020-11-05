@@ -221,6 +221,16 @@
                   placeholder="Your Email"
                 />
               </div>
+              <div class="form-group"  v-if="roleLevel == 1">
+                <label for="editUserRole">Role :</label>
+                <select class="form-control" name="editUserRole" id="editUserRole">
+                  <option value="">Select a role</option>
+                  <option value="1">Administrator</option>
+                  <option value="2">Top Manager</option>
+                  <option value="3">Manager</option>
+                  <option value="4">Employee</option>
+                </select>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -391,8 +401,19 @@ export default {
   methods: {
     updateUser() {
       let bithD = document.querySelector("#editBirthday");
+      let roleUser = document.querySelector("#editUserRole");
+      
       bithD = bithD.value;
+      roleUser = roleUser.value;
       this.user.birthday = bithD;
+      this.user.roleId = roleUser
+
+        console.log("AAAAAAaaaa : " + this.user.role.id);
+
+
+      if (roleUser != "") {
+        console.log("ROLE : " + roleUser);
+      }
 
       axios
         .put(

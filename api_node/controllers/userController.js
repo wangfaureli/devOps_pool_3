@@ -121,7 +121,6 @@ exports.getTeam = function (req, res) {
 exports.update = function (req, res) {
   const { user_id } = req.params;
   const userValues = req.body.user;
-
   const { roleLevel, userId } = userController.getUserConnected(req, res);
 
   if (roleLevel == 1 || roleLevel == 2 || user_id == userId) {
