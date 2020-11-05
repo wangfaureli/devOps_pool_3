@@ -124,7 +124,7 @@ exports.update = function (req, res) {
 
   const { roleLevel, userId } = userController.getUserConnected(req, res);
 
-  if (roleLevel == 1 || roleLevel == 3 || user_id == userId) {
+  if (roleLevel == 1 || roleLevel == 2 || user_id == userId) {
     User.update(userValues, {
       where: {
         id: user_id,
@@ -287,7 +287,7 @@ exports.getAll = function (req, res) {
   const username = req.query.username;
   const email = req.query.email;
   const { roleLevel } = userController.getUserConnected(req, res);
-
+  
   if (roleLevel == 1 || roleLevel == 2) {
     if (username) {
       User.findOne({

@@ -27,10 +27,16 @@
             >
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'myaccount' }" class="nav-link"
+            <router-link :to="{ name: 'account' }" class="nav-link"
               >My Account</router-link
             >
           </li>
+          <li class="nav-item" v-if="this.$store.getters.getRoleLevel != 3">
+            <router-link :to="{ name: 'userlist' }" class="nav-link"
+              >User List</router-link
+            >
+          </li>
+          
           <li class="nav-item" @click="logout()">
             <router-link :to="{ name: 'signOut' }" class="nav-link"
               >Logout</router-link

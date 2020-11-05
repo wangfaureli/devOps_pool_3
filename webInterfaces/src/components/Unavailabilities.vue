@@ -27,23 +27,40 @@
               <div><b>From :</b> {{ formatDate(item.start) }}</div>
               <div><b>To :</b> {{ formatDate(item.end) }}</div>
               <div><b>Reason :</b> {{ item.reason }}</div>
-              <div>
-                <b>Accepted :</b>
-                <span v-if="item.accepted == 0">Refused</span>
-                <span v-else-if="item.accepted == 1">Accepted</span>
-                <span v-else>Not yet answered</span>
-              </div>
-
-              <a
-                v-if="roleLevel == 2 || roleLevel == 1"
-                href="#"
-                @click="edit(item.id)"
-                class="card-link text-info"
-                data-toggle="modal"
-                data-target="#modalAccept"
-                
-                >Edit</a
+              <div
+                v-if="item.accepted == 0"
+                class="text-danger font-weight-bold"
               >
+                <span>Refused</span>
+              </div>
+              <div
+                v-if="item.accepted == 1"
+                class="text-success font-weight-bold"
+              >
+                <span>Accepted</span>
+              </div>
+              <div
+                v-if="item.accepted == null"
+                class="text-info font-weight-bold"
+              >
+                <span>Waiting decision</span>
+              </div>
+              <div v-if="item.accepted == null">
+                <a
+                  v-if="roleLevel == 2 || roleLevel == 1"
+                  href="#"
+                  @click="acceptUna(item.id)"
+                  class="card-link btn btn-success"
+                  >Accept</a
+                >
+                <a
+                  v-if="roleLevel == 2 || roleLevel == 1"
+                  href="#"
+                  @click="refuseUna(item.id)"
+                  class="card-link btn btn-danger"
+                  >Refuse</a
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -86,84 +103,6 @@
                 />
               </div>
               <div class="form-group">
-                <label for="to">Oo :</label>
-                <input
-                  v-model="dateTo"
-                  type="date"
-                  class="form-control"
-                  id="to"
-                  placeholder="date to"
-                />
-              </div>
-              <div class="form-group">
-                <label for="reason">Reason :</label>
-                <input
-                  v-model="reason"
-                  type="text"
-                  class="form-control"
-                  id="reason"
-                  placeholder="Reason"
-                />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn" data-dismiss="modal">
-              Cancel
-            </button>
-            <button
-              class="btn btn-warning"
-              type="submit"
-              aria-label="Close"
-              data-dismiss="modal"
-              value="Add"
-              @click="AddUnavailability()"
-            >
-              Add Unavailabilities
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div
-      class="modal fade"
-      id="modalAccept"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="modalLabelAccept"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabelAccept">
-              Decision
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body d-flex justify-content-around">
-            <form class="form-group">
-              <div class="form-group">
-                <label for="from">From :</label>
-                <input
-                  v-model="dateFrom"
-                  type="date"
-                  class="form-control"
-                  id="from"
-                  placeholder="date from"
-                  disabled
-                />
-              </div>
-              <div class="form-group">
                 <label for="to">To :</label>
                 <input
                   v-model="dateTo"
@@ -171,7 +110,6 @@
                   class="form-control"
                   id="to"
                   placeholder="date to"
-                  disabled
                 />
               </div>
               <div class="form-group">
@@ -182,15 +120,7 @@
                   class="form-control"
                   id="reason"
                   placeholder="Reason"
-                  disabled
                 />
-              </div>
-              <div class="form-group">
-                <label for="reason">Decision :</label>
-                <select class="form-control" name="decisionChoice" id="decisionChoice" >
-                  <option value="true">Accept</option>
-                  <option value="false">Refuse</option>
-                </select>
               </div>
             </form>
           </div>
@@ -233,19 +163,13 @@ export default {
   },
   async mounted() {
     this.roleLevel = this.$store.getters.getRoleLevel;
-    axios
-      .get(`${apiUrl}/unavailabilities`, { withCredentials: true }, {})
-      .then((resp) => {
-        console.log(resp.data);
-        this.unavailabilities = resp.data;
-      });
+    this.refreshData();
   },
   methods: {
-    edit(id) {
-      // TODO
+    acceptUna(id) {
       axios
-        .get(
-          `${apiUrl}/unavailabilities/${id}`,
+        .put(
+          `${apiUrl}/unavailabilities/accept/${id}`,
           {},
           {
             withCredentials: true,
@@ -254,7 +178,30 @@ export default {
         )
         .then((resp) => {
           console.log(resp.data);
-          return resp
+          this.refreshData();
+        });
+    },
+    refuseUna(id) {
+      axios
+        .put(
+          `${apiUrl}/unavailabilities/refuse/${id}`,
+          {},
+          {
+            withCredentials: true,
+          },
+          {}
+        )
+        .then((resp) => {
+          console.log(resp.data);
+          this.refreshData();
+        });
+    },
+    refreshData() {
+      axios
+        .get(`${apiUrl}/unavailabilities`, { withCredentials: true }, {})
+        .then((resp) => {
+          console.log(resp.data);
+          this.unavailabilities = resp.data;
         });
     },
     formatDate(date) {
@@ -283,7 +230,7 @@ export default {
         )
         .then((resp) => {
           console.log(resp.data);
-          this.$router.push("dashboard");
+          this.refreshData();
         });
     },
   },

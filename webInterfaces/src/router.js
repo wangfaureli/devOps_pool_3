@@ -11,6 +11,8 @@ import logout from './components/Auth/Logout.vue';
 import register from './components/Auth/Register.vue';
 import dashBoard from './components/DashBoard.vue';
 import Account from './components/Account.vue';
+import UserList from './components/UserList.vue';
+
 import store from './store/store';
 // import axios from 'axios';
 // import { apiUrl } from '@/settings';
@@ -55,9 +57,14 @@ const router = new Router({
       component: ChartManager,
     },
     {
-      path: '/my-account/',
-      name: 'myaccount',
+      path: '/account/',
+      name: 'account',
       component: Account,
+    },
+    {
+      path: '/userlist/',
+      name: 'userlist',
+      component: UserList,
     },
     {
       path: '/sign_in',

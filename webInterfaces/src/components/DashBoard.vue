@@ -24,6 +24,9 @@ export default {
       UserId: this.$store.getters.getUserId,
     };
   },
+  async mounted() {
+    console.log(this.$store.getters.getRoleLevel);
+  },
   computed: {},
   methods: {},
   components: {

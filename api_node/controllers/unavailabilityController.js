@@ -17,7 +17,9 @@ exports.getAll = function (req, res) {
           as: 'user',
           attributes: ["username", "email", "firstname", "lastname"]
         },
+        
       ],
+      order: [['start', 'ASC']],
     }).then((unavailability) => {
       res.json(unavailability);
     });
@@ -29,7 +31,8 @@ exports.getAll = function (req, res) {
           as: 'user',
           attributes: ["username", "email", "firstname", "lastname"]
         },
-      ]
+      ],
+      order: [['start', 'ASC']],
     }).then((unavailability) => {
       res.json(unavailability);
     });
@@ -140,5 +143,52 @@ exports.update = function (req, res) {
     }).then((unavailability) => {
       res.json({ message: 'Unavailability edited' });
     });
+  }
+};
+
+exports.refuse = function (req, res) {
+  const { unavailability_id } = req.params;
+  const unavailabilityValues = req.body.unavailability;
+
+  const { roleLevel } = userController.getUserConnected(req, res);
+
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    Unavailability.update(
+      {
+        accepted: 0
+      }, {
+      where: {
+        id: unavailability_id,
+      },
+    }).then((unavailability) => {
+      res.json({ message: 'Unavailability refuse' });
+    });
+  } else {
+      res.json({ message: 'You have not the rights to do this' });
+  }
+ }
+
+// Update unavailability by unavailability_id
+exports.accept = function (req, res) {
+  const { unavailability_id } = req.params;
+  const unavailabilityValues = req.body.unavailability;
+
+  const { roleLevel } = userController.getUserConnected(req, res);
+
+  // check if is employee
+  if (roleLevel == 1 || roleLevel == 2) {
+    Unavailability.update(
+      {
+        accepted: 1
+      }, {
+      where: {
+        id: unavailability_id,
+      },
+    }).then((unavailability) => {
+      res.json({ message: 'Unavailability accepted' });
+    });
+  } else {
+      res.json({ message: 'You have not the rights to do this' });
   }
 };

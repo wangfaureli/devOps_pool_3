@@ -11,6 +11,8 @@ router.get('/', unavailability.getAll);
 router.post('/', unavailability.create);
 router.get('/:unavailability_id', unavailability.getById);
 router.put('/:unavailability_id', unavailability.update);
+router.put('/accept/:unavailability_id', unavailability.accept);
+router.put('/refuse/:unavailability_id', unavailability.refuse);
 router.delete('/:unavailability_id', unavailability.delete);
 
 module.exports = router;

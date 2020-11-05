@@ -4,7 +4,7 @@
     <br />
     <div>
       <button
-          v-if="this.$store.getters.getRoleLevel != 3"
+        v-if="this.$store.getters.getRoleLevel != 3"
         class="btn btn-info"
         @click="$router.push(`/workingtimes/add`)"
       >
@@ -14,10 +14,17 @@
     <br />
     <div class="container">
       <div class="row">
-        <div v-for="item in workingTimes" :key="item.id"  class="card col-4 mb-4 ">
+        <div
+          v-for="item in workingTimes"
+          :key="item.id"
+          class="card col-4 mb-4"
+        >
           <div>
             <div class="card-body">
-              <div><b>UserId : </b>{{ item.user.firstname }} {{ item.user.lastname }}</div>
+              <div v-if="item.user != null">
+                <b>UserId : </b>{{ item.user.firstname }}
+                {{ item.user.lastname }}
+              </div>
               <div><b>Start : </b> {{ formatDate(item.start) }}</div>
               <div><b>End : </b> {{ formatDate(item.end) }}</div>
 
@@ -55,8 +62,16 @@ export default {
     axios
       .get(`${apiUrl}/workingtimes`, { withCredentials: true }, {})
       .then((resp) => {
-        console.log(resp.data);
-        this.workingTimes = resp.data;
+        let newArray = resp.data;
+
+        newArray.forEach(el => {
+
+          if (el.user == null) {
+              newArray.splice(el, 1);
+          }
+        });
+          
+        this.workingTimes = newArray;
       });
   },
   methods: {

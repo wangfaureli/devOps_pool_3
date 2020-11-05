@@ -42,21 +42,21 @@
           data-toggle="modal"
           data-target="#modalEditUser"
         >
-          Edit my Profile
+          Edit Profile
         </button>
         <button
           class="btn btn-info mr-5 ml-5"
           data-toggle="modal"
           data-target="#modalEditPassword"
         >
-          Edit my Password
+          Edit Password
         </button>
         <button
           class="btn btn-danger"
           data-toggle="modal"
           data-target="#modalDeleteUser"
         >
-          Delete my Profile
+          Delete Profile
         </button>
       </div>
     </div>
@@ -158,7 +158,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalLabelEditUser">Edit my profile</h5>
+            <h5 class="modal-title" id="modalLabelEditUser">Edit profile</h5>
             <button
               type="button"
               class="close"
@@ -232,10 +232,10 @@
               type="submit"
               aria-label="Close"
               data-dismiss="modal"
-              value="Edit my Profile"
+              value="Edit Profile"
               @click="updateUser()"
             >
-              Edit my Profile
+              Edit Profile
             </button>
           </div>
         </div>
@@ -254,7 +254,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalLabelEditUserPassword">
-              Edit my password
+              Edit password
             </h5>
             <button
               type="button"
@@ -296,10 +296,10 @@
               type="submit"
               aria-label="Close"
               data-dismiss="modal"
-              value="Edit my Password"
+              value="Edit Password"
               @click="updatePassword()"
             >
-              Edit my Password
+              Edit Password
             </button>
           </div>
         </div>
@@ -371,19 +371,33 @@ export default {
   async mounted() {
     this.roleLevel = this.$store.getters.getRoleLevel;
     this.userId = this.$store.getters.getUserId;
-    this.userSelected = this.$store.getters.getUserId;
-    this.getUser();
+
+    let userIdParam = this.$route.params.userIdParam;
+    console.log(userIdParam);
+
+    if (userIdParam) {
+      if (this.roleLevel != 3) {
+        this.userSelected = userIdParam;
+      } else {
+        this.userSelected = this.userId;
+      }
+    }
+
+    // console.log(this.userId);
+    // console.log(userIdParam);
+    // console.log(this.userSelected);
+
+    this.getUser(userIdParam);
   },
   methods: {
     updateUser() {
-      console.log(this.user.username);
       let bithD = document.querySelector("#editBirthday");
       bithD = bithD.value;
       this.user.birthday = bithD;
 
       axios
         .put(
-          `${apiUrl}/users/${this.$store.getters.getUserId}`,
+          `${apiUrl}/users/${this.userSelected}`,
 
           { user: this.user },
           {
@@ -411,7 +425,7 @@ export default {
 
           axios
             .put(
-              `${apiUrl}/users/${this.$store.getters.getUserId}`,
+              `${apiUrl}/users/${this.userSelected}`,
 
               { user: this.user },
               {
@@ -426,10 +440,11 @@ export default {
         });
       }
     },
-    getUser() {
+    getUser(userIdParam) {
+      console.log(this.userSelected);
       axios
         .get(
-          `${apiUrl}/users/${this.$store.getters.getUserId}`,
+          `${apiUrl}/users/${userIdParam}`,
           { withCredentials: true },
           {}
         )
@@ -441,13 +456,13 @@ export default {
     deleteUser() {
       axios
         .delete(
-          `${apiUrl}/users/${this.$store.getters.getUserId}`,
+          `${apiUrl}/users/${this.userSelected}`,
           { withCredentials: true },
           {}
         )
         .then((resp) => {
           console.log(resp.data);
-          this.$router.push("sign_in");
+          this.$router.push("dashboard");
         });
     },
     getUserPage(user) {
