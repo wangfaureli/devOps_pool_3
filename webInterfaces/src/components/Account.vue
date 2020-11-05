@@ -221,7 +221,7 @@
                   placeholder="Your Email"
                 />
               </div>
-              <div class="form-group"  v-if="roleLevel == 1">
+              <div class="form-group"  v-if="roleLevel == 1 || roleLevel == 2">
                 <label for="editUserRole">Role :</label>
                 <select class="form-control" name="editUserRole" id="editUserRole">
                   <option value="">Select a role</option>
