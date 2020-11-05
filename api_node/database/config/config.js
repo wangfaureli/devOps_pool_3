@@ -3,14 +3,14 @@ module.exports = {
     "username": "postgres",
     "password": "postgres",
     "database": "timemanager_api_dev",
-    "host": "localhost",
+    "host": "db",
     "dialect": "postgres",
   },
   production: {
     "username": "postgres",
     "password": "postgres",
     "database": "timemanager_api_prod",
-    "host": "localhost",
+    "host": "db",
     "dialect": "postgres",
   },
 };

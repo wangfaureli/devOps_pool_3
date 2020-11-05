@@ -1,23 +1,17 @@
 FROM node:14
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /home/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+COPY package.json /home/app
+COPY package-lock.json /home/app
 
-RUN npm install &&\
-    # createdb -U postgres timemanager_api_dev &&\
-    npx sequelize db:migrate &&\
-    npm start &&\
-    npx sequelize db:seed:all
-# If you are building your code for production
-# RUN npm ci --only=production
+RUN npm install -g pg sequelize sequelize-cli
+RUN npm install
 
 # Bundle app source
-COPY . .
+COPY . /home/app
 
 EXPOSE 4000
-# CMD [ "npm", "start" ]
+
+CMD ./start.sh
