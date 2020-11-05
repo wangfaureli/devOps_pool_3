@@ -8,51 +8,64 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    userId: window.localStorage.getItem('user_id') || null,
+    userId: window.localStorage.getItem('userId') || null,
     roleLevel: window.localStorage.getItem('roleLevel') || null,
     IsUserAuthenticated: false,
   },
-  mutations: {},
+  getters:{
+    getRoleLevel: (state) => {
+      return state.roleLevel;
+    },
+    getUserId: (state) => {
+      console.log(state.userId)
+      return state.userId;
+
+    },
+    getIsAuthenticated: (state) =>{
+      return state.IsUserAuthenticated
+    }
+  },
+  mutations: {
+    setUserLogout:(state) =>{
+      state.IsUserAuthenticated = false   
+    }
+  },
   actions: {
     recoverUserInfo(context, info) {
-      console.log(info);
 
       axios
-        .post(`${apiUrl}/login`,
+        .post(
+          `${apiUrl}/login`,
           {
             user: {
               username: info.username,
               password: info.password,
-            }
+            },
           },
           {
             withCredentials: true,
           }
         )
-        .then((resp) => {
-          console.log(resp);
-          // const content = await rawResponse.json();
-          // console.log(content["message"]);
+        .then((resp) => {         
+          if(resp.data.message == "user connected")
+          {     
+            this.state.IsUserAuthenticated = true       
+            axios
+              .post(
+                `${apiUrl}/check-token`,
+                {},
+                {
+                  withCredentials: true,
+                }
+              )
+              .then((dataInfos) => {                
+                console.log(dataInfos);
+                this.state.roleLevel = dataInfos.data.roleLevel,
+                this.state.userId = dataInfos.data.userId   
+                
+              });
+          }         
 
-          // if (content["message"] == "user connected") {
-          //   this.dispatch("beforeEach", {});
-          // }
-
-          axios
-          .post(`${apiUrl}/check-token`,
-            {
-              user: {
-                username: info.username,
-                password: info.password,
-              }
-            },
-            {
-              withCredentials: true,
-            }
-          ).then((test) => {
-            // const content = rawResponse.json();
-            console.log(test);
-          });
         });
 
       // return new Promise((resolve, reject) => {

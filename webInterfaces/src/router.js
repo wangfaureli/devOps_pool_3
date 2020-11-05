@@ -12,9 +12,8 @@ import ForgotPassword from './components/ForgotPassword.vue'
 import CreateAccount from './components/CreateAccount.vue'
 import login from './components/Auth/Login.vue';
 import register from './components/Auth/Register.vue';
-import store from './store/store';
-import axios from "axios";
-import { apiUrl } from "@/settings";
+// import store from './store/store';
+// import axios from "axios";
 
 Vue.use(Router);
 const router = new Router({
@@ -85,35 +84,24 @@ const router = new Router({
       name: 'register',
       component: register
     },
-    { path: '/', redirect: '/workingTimes/1' },
+    { path: '/', redirect: '/dashboard/1' },
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  const getCsrfToken = async () => {
-    const { data } = await axios.get(`${apiUrl}/check-token`);
-    axios.defaults.headers.post['c-xsrf-token'] = data.csrfToken;
-   };
-  getCsrfToken (); 
-  // redirect to login page if not logged in and trying to access a restricted page
-  const { authorize } = to.meta;
-  const currentUser = store.state.userId;
-  console.log(currentUser);
+// router.beforeEach((to, from, next) => {
+    
+//   if(!store.getters.getIsAuthenticated)
+//   {
+//     if(to.path == '/dashboard/1' )
+//     {
+//       console.log(to.path)
+//     }else{
+//       router.push('sign_in')
+//     }
+//   }
 
-  if (authorize) {
-      if (!currentUser) {
-          // not logged in so redirect to login page with the return url
-          return next({ path: '/login', query: { returnUrl: to.path } });
-      }
+//      next();
+//   });
 
-      // check if route is restricted by role
-      if (authorize.length && !authorize.includes(currentUser.role)) {
-          // role not authorised so redirect to home page
-          return next({ path: '/' });
-      }
-  }
-
-  next();
-})
 
 export default router;

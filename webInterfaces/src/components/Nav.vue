@@ -66,37 +66,20 @@
            Log In
           </h4>
         </template>
-        <div class="con-form">
-          <vs-input v-model="email" placeholder="Email">
-            <template #icon>
-              @
-            </template>
+        <form action="#" class="con-form" @submit.prevent="signIn">
+          <vs-input v-model="username" placeholder="Username">
           </vs-input>
           <vs-input type="password" v-model="password" placeholder="Password">
-            <template #icon>
-              <i class='bx bxs-lock'></i>
-            </template>
           </vs-input>
-          <div class="flex">
-            <div></div>
-            <div class="new" align = "center">
-              <router-link :to="{ name: 'changePassword'}"><a @click="active=!active">Forgot Password?</a></router-link>  
-            </div>
-          </div>
-        </div>
-        <template #footer>
           <div class="footer-dialog">
-            <vs-button block>
+            <vs-button block type="submit">
               Sign In
             </vs-button>
-            <div class="new" align = "center">
-              <b>New Here?</b> <router-link :to="{ name: 'createAccount'}"><a @click="active=!active">Create Account</a></router-link>
-            </div>
           </div>
-        </template>
+        </form>
       </vs-dialog>
-    </template>
-    <div id ="app">
+    </template> 
+        <div id ="app">
       <router-view/>
     </div>
   </div>
@@ -107,22 +90,30 @@ export default {
   data:() => ({
     active: false,
     login: false,
-    email: '',
+    username: '',
     password: '',
     remember: false,
     activeSidebar: false,
   }),
   created() {
-    if (this.userId == "") {
-      this.userId = 1;
-    }
+    // if (this.userId == "") {
+    //   this.userId = 1;
+    // }
   },
   methods: {
-    goto(route) {
-      console.log(this.$router.currentRoute);
-      // this.$router.currentRoute.path = "";
-      this.$router.push(route);
-      // this.$router.go();
+
+    signIn() {
+      // this.loading = true;
+      console.log(this.username);
+      console.log(this.password);
+      this.$store
+          .dispatch("recoverUserInfo", {
+            username: this.username,
+            password: this.password,
+          })
+          .then(() => {            
+            this.$router.push("/");            
+          });
     },
   }
 };
