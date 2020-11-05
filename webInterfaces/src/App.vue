@@ -31,6 +31,11 @@
               >Chart Manager</router-link
             >
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'myaccount' }" class="nav-link"
+              >My Account</router-link
+            >
+          </li>
           <li class="nav-item" @click="logout()">
             <router-link :to="{ name: 'signOut' }" class="nav-link"
               >Logout</router-link

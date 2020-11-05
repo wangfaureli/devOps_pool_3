@@ -93,7 +93,8 @@ export default {
         axios
           .post(
             `${apiUrl}/clocks/${this.$store.getters.getUserId}`,
-            { withCredentials: true },
+            { withCredentials: true,
+             },
             {}
           )
           .then((resp) => {

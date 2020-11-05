@@ -12,6 +12,12 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          name: 'Top Manager',
+          level: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           name: 'Manager',
           level: 2,
           createdAt: new Date(),

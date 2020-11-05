@@ -69,7 +69,7 @@ module.exports = {
           birthday: '1965-08-24',
           createdAt: new Date(),
           updatedAt: new Date(),
-          roleId: 3
+          roleId: 4
         },
       ],
       {}

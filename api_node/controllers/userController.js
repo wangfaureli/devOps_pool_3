@@ -261,7 +261,7 @@ exports.delete = function (req, res) {
 
   const { roleLevel } = userController.getUserConnected(req, res);
 
-  if (roleLevel == 1) {
+  // if (roleLevel == 1) {
     const deleteUser = User.destroy({
       where: {
         id: userId,
@@ -269,9 +269,9 @@ exports.delete = function (req, res) {
     }).then((user) => {
       res.json({ message: 'user deleted' });
     });
-  } else {
-    res.json({ message: "you don't have the rights to do this" });
-  }
+  // } else {
+  //   res.json({ message: "you don't have the rights to do this" });
+  // }
 };
 
 // Get all users
