@@ -425,8 +425,7 @@ export default {
           },
           {}
         )
-        .then((resp) => {
-          console.log(resp.data);
+        .then(() => {
           this.$router.push("dashboard");
         });
     },
@@ -440,7 +439,6 @@ export default {
       if (newPass == newPassRepeat) {
         bcrypt.hash(newPassRepeat, 6).then((hash) => {
           this.user.password = hash;
-          console.log(this.user.password);
 
           axios
             .put(
@@ -452,19 +450,16 @@ export default {
               },
               {}
             )
-            .then((resp) => {
-              console.log(resp.data);
+            .then(() => {
               this.$router.push("dashboard");
             });
         });
       }
     },
     getUser(userIdParam) {
-      console.log(userIdParam);
       axios
         .get(`${apiUrl}/users/${userIdParam}`, { withCredentials: true }, {})
         .then((resp) => {
-          console.log(resp.data);
           this.user = resp.data;
         });
     },
@@ -475,8 +470,7 @@ export default {
           { withCredentials: true },
           {}
         )
-        .then((resp) => {
-          console.log(resp.data);
+        .then(() => {
           this.$router.push("dashboard");
         });
     },
