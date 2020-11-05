@@ -20,6 +20,10 @@
           <p>{{ user.email }}</p>
         </div>
         <div class="d-flex">
+          <label style="width: 200px">Role : </label>
+          <p>{{ user.role.name }}</p>
+        </div>
+        <div class="d-flex">
           <label style="width: 200px">Birthday : </label>
           <p>{{ formatDate(user.birthday) }}</p>
         </div>
@@ -41,7 +45,7 @@
           Edit my Profile
         </button>
         <button
-          class="btn btn-warning mr-5 ml-5"
+          class="btn btn-info mr-5 ml-5"
           data-toggle="modal"
           data-target="#modalEditPassword"
         >
@@ -288,7 +292,7 @@
               Cancel
             </button>
             <button
-              class="btn btn-warning"
+              class="btn btn-info"
               type="submit"
               aria-label="Close"
               data-dismiss="modal"

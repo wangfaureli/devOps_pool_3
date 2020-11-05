@@ -14,6 +14,9 @@
           <div>
             <div class="card-body">
               <div>
+                <div v-if="roleLevel != 3">
+                  User : {{ item.user.firstname }} {{ item.user.lastname }}
+                </div>
                 <div v-if="item.status == 1">
                   Created at : {{ formatDate(item.createdAt) }}
                 </div>

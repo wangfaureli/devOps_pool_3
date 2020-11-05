@@ -2,14 +2,13 @@
   <div class="jumbotron jumbotron-fluid" id="main">
     <h1>ClockManager!</h1>
     <h6>
-      UserID envoyé en paramètre : <b>{{ userId }}</b>
     </h6>
 
     <div class="alert alert-danger" role="alert" v-if="clockIn">
-      Attention! Le travail est en cours.
+      Work is in progress
     </div>
     <div class="alert alert-success" role="alert" v-else>
-      Yes! le travail est terminé.
+      Work is completed
     </div>
 
     <div class="time">
@@ -31,7 +30,6 @@
       <button type="button" class="btn btn-danger" @click="Stop()" v-else>
         Stop
       </button>
-      <button type="button" class="btn btn-info" @click="Reset()">Reset</button>
     </div>
   </div>
 </template>
@@ -41,7 +39,7 @@
 import api from "@/api";
 import moment from "moment";
 import axios from "axios";
-import { apiUrl } from "@/settings"
+import { apiUrl } from "@/settings";
 
 export default {
   data() {
@@ -90,16 +88,18 @@ export default {
         //on stocke les informations de clock dans la BDD
         this.clock();
 
-        axios
-          .post(
-            `${apiUrl}/clocks/${this.$store.getters.getUserId}`,
-            { withCredentials: true,
-             },
-            {}
-          )
-          .then((resp) => {
-            console.log(resp.data);
-          });
+         axios
+        .post(
+          `${apiUrl}/clocks/${this.$store.getters.getUserId}`,
+          {},
+          {
+            withCredentials: true,
+          },
+          {}
+        )
+        .then((resp) => {
+          console.log(resp.data);
+        });
       }
     },
     Stop() {
@@ -111,7 +111,10 @@ export default {
       axios
         .post(
           `${apiUrl}/clocks/${this.$store.getters.getUserId}`,
-          { withCredentials: true },
+          {},
+          {
+            withCredentials: true,
+          },
           {}
         )
         .then((resp) => {

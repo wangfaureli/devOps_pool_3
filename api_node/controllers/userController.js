@@ -59,6 +59,10 @@ exports.updateTeams = function (req, res) {
             model: Team,
             as: 'teams',
           },
+          {
+            model: Role,
+            as: 'role',
+          },
         ],
       }).then((user) => {
         user.setTeams(teams).then((userteam) => {
@@ -149,6 +153,10 @@ exports.login = function (req, res) {
       username: username,
     },
     include: [
+      {
+        model: Team,
+        as: 'teams',
+      },
       {
         model: Role,
         as: 'role',
@@ -304,6 +312,10 @@ exports.getAll = function (req, res) {
           {
             model: Team,
             as: 'teams',
+          },
+          {
+            model: Role,
+            as: 'role',
           },
         ],
       }).then((users) => {

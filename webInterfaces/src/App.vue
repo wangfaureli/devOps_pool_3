@@ -27,11 +27,6 @@
             >
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'chart' }" class="nav-link"
-              >Chart Manager</router-link
-            >
-          </li>
-          <li class="nav-item">
             <router-link :to="{ name: 'myaccount' }" class="nav-link"
               >My Account</router-link
             >

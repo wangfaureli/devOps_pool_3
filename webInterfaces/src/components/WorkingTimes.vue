@@ -4,6 +4,7 @@
     <br />
     <div>
       <button
+          v-if="this.$store.getters.getRoleLevel != 3"
         class="btn btn-info"
         @click="$router.push(`/workingtimes/add`)"
       >
@@ -16,8 +17,9 @@
         <div v-for="item in workingTimes" :key="item.id"  class="card col-4 mb-4 ">
           <div>
             <div class="card-body">
-              <div><b>Start :</b> {{ formatDate(item.start) }}</div>
-              <div><b>End :</b> {{ formatDate(item.end) }}</div>
+              <div><b>UserId : </b>{{ item.user.firstname }} {{ item.user.lastname }}</div>
+              <div><b>Start : </b> {{ formatDate(item.start) }}</div>
+              <div><b>End : </b> {{ formatDate(item.end) }}</div>
 
               <a
                 v-if="roleLevel == 2 || roleLevel == 1"

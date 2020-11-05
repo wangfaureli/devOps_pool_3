@@ -1,4 +1,4 @@
-const { Clock } = require('../database/models');
+const { Clock, User } = require('../database/models');
 const userController = require('../controllers/userController');
 
 // Get all clocks by user_id
@@ -17,6 +17,13 @@ exports.getByUser = function (req, res) {
     where: {
       userId: user_id,
     },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ["username", "email", "firstname", "lastname"]
+      },
+    ],
   }).then((clocks) => {
     res.json(clocks);
   });

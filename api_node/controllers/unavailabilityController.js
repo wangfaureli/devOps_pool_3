@@ -11,7 +11,13 @@ exports.getAll = function (req, res) {
       where: {
         userId: userId,
       },
-      include: [{ model: User, as: 'User' }],
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ["username", "email", "firstname", "lastname"]
+        },
+      ],
     }).then((unavailability) => {
       res.json(unavailability);
     });
@@ -80,6 +86,13 @@ exports.getById = function (req, res) {
   if (roleLevel == 1 || roleLevel == 2) {
     Unavailability.findOne({
       where: { id: unavailability_id },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ["username", "email", "firstname", "lastname"]
+        },
+      ],
     }).then((unavailability) => {
       res.json(unavailability);
     });
@@ -89,6 +102,13 @@ exports.getById = function (req, res) {
         id: unavailability_id,
         userId: userId,
       },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ["username", "email", "firstname", "lastname"]
+        },
+      ],
     }).then((unavailability) => {
       res.json(unavailability);
     });

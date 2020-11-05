@@ -1,4 +1,4 @@
-const { WorkingTime } = require('../database/models');
+const { WorkingTime, User } = require('../database/models');
 const userController = require('../controllers/userController');
 
 // Get all working time by user and date
@@ -29,6 +29,13 @@ exports.getAll = function (req, res) {
           [Op.lte]: dateEnd,
         },
       },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ["username", "email", "firstname", "lastname"]
+        },
+      ],
       order: [['start', 'ASC']],
     }).then((workingTimes) => {
       res.json(workingTimes);
@@ -43,6 +50,13 @@ exports.getAll = function (req, res) {
           [Op.lte]: dateEnd,
         },
       },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ["username", "email", "firstname", "lastname"]
+        },
+      ],
       order: [['start', 'ASC']],
     }).then((workingTimes) => {
       res.json(workingTimes);
@@ -112,6 +126,13 @@ exports.getByUser = function (req, res) {
         [Op.lte]: dateEnd,
       },
     },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ["username", "email", "firstname", "lastname"]
+      },
+    ],
     order: [['start', 'ASC']],
   }).then((workingTimes) => {
     res.json(workingTimes);
@@ -137,6 +158,13 @@ exports.getByIdAndUser = function (req, res) {
       userId: user_id,
       id: workingTimeId,
     },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ["username", "email", "firstname", "lastname"]
+      },
+    ],
   }).then((workingTimes) => {
     res.json(workingTimes);
   });
