@@ -370,24 +370,23 @@ export default {
   },
   async mounted() {
     this.roleLevel = this.$store.getters.getRoleLevel;
-    this.userId = this.$store.getters.getUserId;
+    const userId = this.$store.getters.getUserId;
+    this.userId = userId;
 
     let userIdParam = this.$route.params.userIdParam;
-    console.log(userIdParam);
 
     if (userIdParam) {
       if (this.roleLevel != 3) {
         this.userSelected = userIdParam;
+        this.getUser(userIdParam);
       } else {
-        this.userSelected = this.userId;
+        this.userSelected = userId;
+        this.getUser(this.userId);
       }
+    } else {
+      this.userSelected = userId;
+      this.getUser(this.userId);
     }
-
-    // console.log(this.userId);
-    // console.log(userIdParam);
-    // console.log(this.userSelected);
-
-    this.getUser(userIdParam);
   },
   methods: {
     updateUser() {
@@ -406,7 +405,6 @@ export default {
           {}
         )
         .then((resp) => {
-          console.log(resp.data);
           this.$router.push("dashboard");
         });
     },
@@ -418,10 +416,8 @@ export default {
       newPassRepeat = newPassRepeat.value;
 
       if (newPass == newPassRepeat) {
-
         bcrypt.hash(newPassRepeat, 6).then((hash) => {
           this.user.password = hash;
-          console.log(this.user.password);
 
           axios
             .put(
@@ -434,22 +430,15 @@ export default {
               {}
             )
             .then((resp) => {
-              console.log(resp.data);
               this.$router.push("dashboard");
             });
         });
       }
     },
     getUser(userIdParam) {
-      console.log(this.userSelected);
       axios
-        .get(
-          `${apiUrl}/users/${userIdParam}`,
-          { withCredentials: true },
-          {}
-        )
+        .get(`${apiUrl}/users/${userIdParam}`, { withCredentials: true }, {})
         .then((resp) => {
-          console.log(resp.data);
           this.user = resp.data;
         });
     },
@@ -461,7 +450,6 @@ export default {
           {}
         )
         .then((resp) => {
-          console.log(resp.data);
           this.$router.push("dashboard");
         });
     },
