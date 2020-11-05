@@ -370,24 +370,23 @@ export default {
   },
   async mounted() {
     this.roleLevel = this.$store.getters.getRoleLevel;
-    this.userId = this.$store.getters.getUserId;
+    const userId = this.$store.getters.getUserId;
+    this.userId = userId;
 
     let userIdParam = this.$route.params.userIdParam;
-    console.log(userIdParam);
 
     if (userIdParam) {
       if (this.roleLevel != 3) {
         this.userSelected = userIdParam;
+        this.getUser(userIdParam);
       } else {
-        this.userSelected = this.userId;
+        this.userSelected = userId;
+        this.getUser(this.userId);
       }
+    } else {
+      this.userSelected = userId;
+      this.getUser(this.userId);
     }
-
-    // console.log(this.userId);
-    // console.log(userIdParam);
-    // console.log(this.userSelected);
-
-    this.getUser(userIdParam);
   },
   methods: {
     updateUser() {
@@ -418,7 +417,6 @@ export default {
       newPassRepeat = newPassRepeat.value;
 
       if (newPass == newPassRepeat) {
-
         bcrypt.hash(newPassRepeat, 6).then((hash) => {
           this.user.password = hash;
           console.log(this.user.password);
@@ -441,13 +439,9 @@ export default {
       }
     },
     getUser(userIdParam) {
-      console.log(this.userSelected);
+      console.log(userIdParam);
       axios
-        .get(
-          `${apiUrl}/users/${userIdParam}`,
-          { withCredentials: true },
-          {}
-        )
+        .get(`${apiUrl}/users/${userIdParam}`, { withCredentials: true }, {})
         .then((resp) => {
           console.log(resp.data);
           this.user = resp.data;
